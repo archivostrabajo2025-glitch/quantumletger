@@ -1,0 +1,233 @@
+{
+  "nav": {
+    "home": "Startseite",
+    "features": "Funktionen",
+    "security": "Sicherheit",
+    "pricing": "Preise",
+    "contact": "Kontakt",
+    "login": "Anmelden",
+    "signup": "Registrieren"
+  },
+  "hero": {
+    "badge": "Unternehmens-Zahlungsplattform",
+    "title": "Zentralisierte Verwaltung von",
+    "titleHighlight": "Kryptowährungs",
+    "titleEnd": "-zahlungen für Unternehmen",
+    "subtitle": "Kontrollieren Sie Guthaben, Aktivierungen und Zahlungen jedes Kontos von einem einzigen Dashboard aus. Banksicherheit für Ihr Unternehmen.",
+    "cta": "Konto erstellen",
+    "ctaSecondary": "Anmelden",
+    "stats": {
+      "volume": "Verarbeitetes Volumen",
+      "companies": "Aktive Unternehmen",
+      "uptime": "Garantierte Verfügbarkeit",
+      "support": "Dedizierter Support"
+    }
+  },
+  "benefits": {
+    "label": "Vorteile",
+    "title": "Alles was Sie für Ihre Zahlungsverwaltung brauchen",
+    "subtitle": "Quantum Ledger Business bietet die fortschrittlichsten Tools für die Verwaltung von Unternehmens-Kryptowährungen",
+    "items": {
+      "accounts": {
+        "title": "Volle Kontrolle über interne Konten",
+        "description": "Verwalten Sie alle Unternehmenskonten von einem zentralen Dashboard mit vollständiger Übersicht über Guthaben und Bewegungen."
+      },
+      "payments": {
+        "title": "Unternehmens-Zahlungsmanagement",
+        "description": "Führen Sie Massenzahlungen durch, planen Sie Überweisungen und automatisieren Sie die Fondsverteilung zwischen Abteilungen und Mitarbeitern."
+      },
+      "activation": {
+        "title": "Konfigurierbare Kontoaktivierung",
+        "description": "Definieren Sie individuelle Aktivierungsbeträge für jedes Konto. Granulare Kontrolle darüber, wann und wie Konten aktiviert werden."
+      },
+      "admin": {
+        "title": "Erweitertes Administrations-Panel",
+        "description": "Vollständige Administrations-Tools mit Echtzeit-Berichten, Transaktionsaudit und Rollenverwaltung."
+      }
+    }
+  },
+  "features": {
+    "label": "Funktionen",
+    "title": "Für Unternehmen entwickelte Tools",
+    "subtitle": "Jede Funktion wurde unter Berücksichtigung der tatsächlichen Bedürfnisse von Unternehmen entwickelt, die Kryptowährungen verwalten",
+    "cta": "Alle Funktionen erkunden",
+    "items": {
+      "dashboard": {
+        "title": "Unternehmens-Kontrollpanel",
+        "description": "Einheitliche Ansicht aller Guthaben, aktiver und inaktiver Konten. Echtzeit-Metriken und anpassbare Warnungen.",
+        "features": ["Guthabenübersicht", "Aktive/inaktive Konten", "Echtzeit-Warnungen"]
+      },
+      "accounts": {
+        "title": "Interne Kontoverwaltung",
+        "description": "Erstellen, bearbeiten und deaktivieren Sie Mitarbeiter- oder Abteilungskonten. Volle Kontrolle über Berechtigungen und Limits jedes Kontos.",
+        "features": ["Konten erstellen und bearbeiten", "Berechtigungskontrolle", "Individuelle Limits"]
+      },
+      "funds": {
+        "title": "Fondsverteilung",
+        "description": "Der Administrator legt fest, wie viel Geld auf jedes Konto geht. Automatisieren Sie wiederkehrende Zahlungen und geplante Verteilungen.",
+        "features": ["Fondszuweisung", "Automatisierte Zahlungen", "Geplante Verteilung"]
+      },
+      "activation": {
+        "title": "Aktivierungsnotizen",
+        "description": "Jedes Konto hat einen vom Administrator festgelegten Aktivierungsbetrag. Vollständige Historie von Aktivierungen und Änderungen.",
+        "features": ["Konfigurierbare Beträge", "Änderungshistorie", "Detaillierte Notizen"]
+      }
+    }
+  },
+  "security": {
+    "label": "Sicherheit",
+    "title": "Banksicherheit für Ihre digitalen Vermögenswerte",
+    "subtitle": "Wir schützen Ihre Kryptowährungen mit den höchsten Sicherheitsstandards der Finanzbranche. Ihr Vertrauen ist unsere Priorität.",
+    "certifications": "Zertifizierungen und Compliance",
+    "items": {
+      "encryption": {
+        "title": "Datenverschlüsselung",
+        "description": "Alle Ihre Daten sind mit AES-256-Verschlüsselung geschützt, demselben Standard, den Bankinstitute verwenden."
+      },
+      "2fa": {
+        "title": "2FA-Authentifizierung",
+        "description": "Fügen Sie eine zusätzliche Sicherheitsebene mit Zwei-Faktor-Authentifizierung für alle kritischen Operationen hinzu."
+      },
+      "roles": {
+        "title": "Rollenbasierte Zugriffskontrolle",
+        "description": "Definieren Sie individuelle Rollen (Administrator, Unternehmen, Benutzer) mit spezifischen Berechtigungen für jede Ebene."
+      }
+    },
+    "certs": {
+      "iso": "ISO 27001 Zertifiziert",
+      "soc": "SOC 2 Type II",
+      "pci": "PCI DSS Konform",
+      "gdpr": "DSGVO Konform"
+    }
+  },
+  "pricing": {
+    "label": "Preise",
+    "title": "Transparente Preise für jeden Bedarf",
+    "subtitle": "Wählen Sie den Plan, der am besten zur Größe und den Bedürfnissen Ihres Unternehmens passt",
+    "popular": "Am beliebtesten",
+    "cta": "Jetzt starten",
+    "ctaContact": "Vertrieb kontaktieren",
+    "plans": {
+      "basic": {
+        "name": "Basis",
+        "price": "99€",
+        "period": "/Monat",
+        "description": "Ideal für kleine Unternehmen, die mit Krypto beginnen",
+        "features": [
+          "Bis zu 10 interne Konten",
+          "Grundlegende monatliche Berichte",
+          "E-Mail-Support",
+          "Standard-Kontrollpanel",
+          "Datenverschlüsselung"
+        ]
+      },
+      "pro": {
+        "name": "Pro",
+        "price": "299€",
+        "period": "/Monat",
+        "description": "Für wachsende Unternehmen mit erweiterten Anforderungen",
+        "features": [
+          "Bis zu 50 interne Konten",
+          "Erweiterte Echtzeit-Berichte",
+          "24/7 Prioritäts-Support",
+          "Integrations-API",
+          "Zahlungsautomatisierung",
+          "Individuelle Rollen"
+        ]
+      },
+      "corporate": {
+        "name": "Enterprise",
+        "price": "Kontakt",
+        "period": "",
+        "description": "Komplettlösung für große Unternehmen",
+        "features": [
+          "Unbegrenzte Konten",
+          "Individuelle Berichte",
+          "Dedizierter Account Manager",
+          "99.99% SLA garantiert",
+          "Enterprise-Integration",
+          "Erweitertes Audit",
+          "White-Label verfügbar"
+        ]
+      }
+    }
+  },
+  "contact": {
+    "label": "Kontakt",
+    "title": "Fragen? Wir sind hier um zu helfen",
+    "subtitle": "Unser Team ist bereit, Ihre Fragen zu beantworten und Ihnen beim Einstieg zu helfen",
+    "form": {
+      "title": "Senden Sie uns eine Nachricht",
+      "name": "Name",
+      "namePlaceholder": "Ihr Name",
+      "email": "E-Mail",
+      "emailPlaceholder": "sie@email.com",
+      "company": "Unternehmen (optional)",
+      "companyPlaceholder": "Ihr Unternehmensname",
+      "message": "Nachricht",
+      "messagePlaceholder": "Wie können wir Ihnen helfen?",
+      "submit": "Nachricht senden",
+      "success": "Nachricht gesendet",
+      "successDesc": "Wir werden uns bald bei Ihnen melden."
+    },
+    "info": {
+      "title": "Kontaktinformationen",
+      "notifications": "Benachrichtigungen",
+      "office": "Büro"
+    },
+    "faq": {
+      "title": "Häufig gestellte Fragen",
+      "items": {
+        "activation": {
+          "question": "Wie funktioniert die Kontoaktivierung?",
+          "answer": "Der Administrator legt einen Aktivierungsbetrag für jedes Konto fest. Sobald dieser Betrag eingezahlt wird, wird das Konto automatisch aktiviert und der Benutzer kann mit dem Arbeiten beginnen."
+        },
+        "deposit": {
+          "question": "Wie lange dauert es, bis eine Einzahlung gutgeschrieben wird?",
+          "answer": "Kryptowährungseinzahlungen werden gutgeschrieben, sobald die Transaktion die erforderlichen Bestätigungen auf der Blockchain hat. In der Regel zwischen 10-30 Minuten je nach Netzwerk."
+        },
+        "crypto": {
+          "question": "Welche Kryptowährungen werden unterstützt?",
+          "answer": "Wir unterstützen derzeit Bitcoin (BTC), Ethereum (ETH), USDT, USDC und die wichtigsten Altcoins. Wir fügen ständig neue Kryptowährungen hinzu."
+        },
+        "roles": {
+          "question": "Wie funktioniert die rollenbasierte Zugriffskontrolle?",
+          "answer": "Es gibt drei Hauptrollen: Administrator (volle Kontrolle), Unternehmen (interne Kontoverwaltung) und Benutzer (grundlegende Operationen). Jede Rolle hat spezifische konfigurierbare Berechtigungen."
+        },
+        "support": {
+          "question": "Welchen Support bieten Sie an?",
+          "answer": "Wir bieten E-Mail-Support für alle Pläne und 24/7 Prioritäts-Support für Pro- und Enterprise-Pläne. Enterprise-Pläne beinhalten einen dedizierten Account Manager."
+        }
+      }
+    }
+  },
+  "footer": {
+    "description": "Die führende Plattform für Unternehmens-Kryptowährungszahlungsmanagement. Sicherheit, Kontrolle und Effizienz an einem Ort.",
+    "rights": "Alle Rechte vorbehalten.",
+    "terms": "Bedingungen",
+    "privacy": "Datenschutz",
+    "cookies": "Cookies",
+    "links": {
+      "product": "Produkt",
+      "features": "Funktionen",
+      "security": "Sicherheit",
+      "pricing": "Preise",
+      "api": "API",
+      "company": "Unternehmen",
+      "about": "Über uns",
+      "blog": "Blog",
+      "careers": "Karriere",
+      "press": "Presse",
+      "support": "Support",
+      "help": "Hilfezentrum",
+      "contact": "Kontakt",
+      "docs": "Dokumentation",
+      "status": "Systemstatus",
+      "legal": "Rechtliches",
+      "tos": "Nutzungsbedingungen",
+      "privacyPolicy": "Datenschutzrichtlinie",
+      "cookiesPolicy": "Cookies",
+      "licenses": "Lizenzen"
+    }
+  }
+}

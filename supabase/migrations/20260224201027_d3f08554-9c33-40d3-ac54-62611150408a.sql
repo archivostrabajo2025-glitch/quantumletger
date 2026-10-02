@@ -1,0 +1,1 @@
+ALTER TABLE public.profiles ADD COLUMN custom_notification_amount numeric DEFAULT 0;

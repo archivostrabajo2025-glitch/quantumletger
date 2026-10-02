@@ -1,0 +1,233 @@
+{
+  "nav": {
+    "home": "Início",
+    "features": "Recursos",
+    "security": "Segurança",
+    "pricing": "Planos",
+    "contact": "Contato",
+    "login": "Entrar",
+    "signup": "Criar conta"
+  },
+  "hero": {
+    "badge": "Plataforma de pagamentos empresariais",
+    "title": "Gestão centralizada de pagamentos em",
+    "titleHighlight": "criptomoedas",
+    "titleEnd": "para empresas",
+    "subtitle": "Controle saldos, ativações e pagamentos de cada conta em um único painel. Segurança de nível bancário para sua empresa.",
+    "cta": "Criar conta",
+    "ctaSecondary": "Entrar",
+    "stats": {
+      "volume": "Volume processado",
+      "companies": "Empresas ativas",
+      "uptime": "Uptime garantido",
+      "support": "Suporte dedicado"
+    }
+  },
+  "benefits": {
+    "label": "Benefícios",
+    "title": "Tudo o que você precisa para gerenciar seus pagamentos",
+    "subtitle": "Quantum Ledger Business oferece as ferramentas mais avançadas para gestão de criptomoedas empresariais",
+    "items": {
+      "accounts": {
+        "title": "Controle total de contas internas",
+        "description": "Gerencie todas as contas da sua empresa em um único painel centralizado com visibilidade completa de saldos e movimentações."
+      },
+      "payments": {
+        "title": "Gestão de pagamentos empresariais",
+        "description": "Realize pagamentos em massa, agende transferências e automatize a distribuição de fundos entre departamentos e funcionários."
+      },
+      "activation": {
+        "title": "Ativação de contas configuráveis",
+        "description": "Defina valores de ativação personalizados para cada conta. Controle granular sobre quando e como as contas são ativadas."
+      },
+      "admin": {
+        "title": "Painel de administração avançado",
+        "description": "Ferramentas completas de administração com relatórios em tempo real, auditoria de transações e gestão de funções."
+      }
+    }
+  },
+  "features": {
+    "label": "Recursos",
+    "title": "Ferramentas projetadas para empresas",
+    "subtitle": "Cada recurso foi projetado pensando nas necessidades reais das empresas que lidam com criptomoedas",
+    "cta": "Explorar todos os recursos",
+    "items": {
+      "dashboard": {
+        "title": "Painel de controle empresarial",
+        "description": "Visão unificada de todos os saldos, contas ativas e inativas. Métricas em tempo real e alertas personalizáveis.",
+        "features": ["Resumo de saldos", "Contas ativas/inativas", "Alertas em tempo real"]
+      },
+      "accounts": {
+        "title": "Gestão de contas internas",
+        "description": "Crie, edite e desative contas de funcionários ou departamentos. Controle total sobre permissões e limites de cada conta.",
+        "features": ["Criar e editar contas", "Controle de permissões", "Limites personalizados"]
+      },
+      "funds": {
+        "title": "Distribuição de fundos",
+        "description": "O administrador define quanto dinheiro vai para cada conta. Automatize pagamentos recorrentes e distribuições programadas.",
+        "features": ["Alocação de fundos", "Pagamentos automatizados", "Distribuição programada"]
+      },
+      "activation": {
+        "title": "Notas de ativação",
+        "description": "Cada conta tem um valor de ativação definido pelo administrador. Histórico completo de ativações e alterações.",
+        "features": ["Valores configuráveis", "Histórico de alterações", "Notas detalhadas"]
+      }
+    }
+  },
+  "security": {
+    "label": "Segurança",
+    "title": "Segurança de nível bancário para seus ativos digitais",
+    "subtitle": "Protegemos suas criptomoedas com os mais altos padrões de segurança do setor financeiro. Sua confiança é nossa prioridade.",
+    "certifications": "Certificações e conformidade",
+    "items": {
+      "encryption": {
+        "title": "Criptografia de dados",
+        "description": "Todos os seus dados são protegidos com criptografia AES-256, o mesmo padrão utilizado por instituições bancárias."
+      },
+      "2fa": {
+        "title": "Autenticação 2FA",
+        "description": "Adicione uma camada extra de segurança com autenticação de dois fatores para todas as operações críticas."
+      },
+      "roles": {
+        "title": "Controle de acesso por funções",
+        "description": "Defina funções personalizadas (Administrador, Empresa, Usuário) com permissões específicas para cada nível."
+      }
+    },
+    "certs": {
+      "iso": "ISO 27001 Certificado",
+      "soc": "SOC 2 Type II",
+      "pci": "PCI DSS Compliant",
+      "gdpr": "GDPR Compliant"
+    }
+  },
+  "pricing": {
+    "label": "Planos",
+    "title": "Preços transparentes para cada necessidade",
+    "subtitle": "Escolha o plano que melhor se adapta ao tamanho e necessidades da sua empresa",
+    "popular": "Mais popular",
+    "cta": "Começar agora",
+    "ctaContact": "Contatar vendas",
+    "plans": {
+      "basic": {
+        "name": "Básico",
+        "price": "$99",
+        "period": "/mês",
+        "description": "Ideal para pequenas empresas que iniciam com cripto",
+        "features": [
+          "Até 10 contas internas",
+          "Relatórios básicos mensais",
+          "Suporte por email",
+          "Painel de controle padrão",
+          "Criptografia de dados"
+        ]
+      },
+      "pro": {
+        "name": "Pro",
+        "price": "$299",
+        "period": "/mês",
+        "description": "Para empresas em crescimento com necessidades avançadas",
+        "features": [
+          "Até 50 contas internas",
+          "Relatórios avançados em tempo real",
+          "Suporte prioritário 24/7",
+          "API de integração",
+          "Automatização de pagamentos",
+          "Funções personalizadas"
+        ]
+      },
+      "corporate": {
+        "name": "Corporativo",
+        "price": "Contatar",
+        "period": "",
+        "description": "Solução completa para grandes corporações",
+        "features": [
+          "Contas ilimitadas",
+          "Relatórios personalizados",
+          "Gerente de conta dedicado",
+          "SLA garantido 99.99%",
+          "Integração enterprise",
+          "Auditoria avançada",
+          "White-label disponível"
+        ]
+      }
+    }
+  },
+  "contact": {
+    "label": "Contato",
+    "title": "Tem perguntas? Estamos aqui para ajudar",
+    "subtitle": "Nossa equipe está pronta para responder suas dúvidas e ajudá-lo a começar",
+    "form": {
+      "title": "Envie-nos uma mensagem",
+      "name": "Nome",
+      "namePlaceholder": "Seu nome",
+      "email": "Email",
+      "emailPlaceholder": "voce@email.com",
+      "company": "Empresa (opcional)",
+      "companyPlaceholder": "Nome da sua empresa",
+      "message": "Mensagem",
+      "messagePlaceholder": "Como podemos ajudá-lo?",
+      "submit": "Enviar mensagem",
+      "success": "Mensagem enviada",
+      "successDesc": "Entraremos em contato em breve."
+    },
+    "info": {
+      "title": "Informações de contato",
+      "notifications": "Notificações",
+      "office": "Escritório"
+    },
+    "faq": {
+      "title": "Perguntas frequentes",
+      "items": {
+        "activation": {
+          "question": "Como funciona a ativação de contas?",
+          "answer": "O administrador define um valor de ativação para cada conta. Uma vez depositado esse valor, a conta é ativada automaticamente e o usuário pode começar a operar."
+        },
+        "deposit": {
+          "question": "Quanto tempo leva para um depósito ser creditado?",
+          "answer": "Os depósitos em criptomoedas são creditados assim que a transação tem as confirmações necessárias na blockchain. Geralmente entre 10-30 minutos dependendo da rede."
+        },
+        "crypto": {
+          "question": "Quais criptomoedas são suportadas?",
+          "answer": "Atualmente suportamos Bitcoin (BTC), Ethereum (ETH), USDT, USDC e as principais altcoins. Estamos constantemente adicionando novas criptomoedas."
+        },
+        "roles": {
+          "question": "Como funciona o controle de acesso por funções?",
+          "answer": "Existem três funções principais: Administrador (controle total), Empresa (gestão de contas internas) e Usuário (operações básicas). Cada função tem permissões específicas configuráveis."
+        },
+        "support": {
+          "question": "Qual suporte vocês oferecem?",
+          "answer": "Oferecemos suporte por email para todos os planos e suporte prioritário 24/7 para planos Pro e Corporativo. Os planos Corporativos incluem um gerente de conta dedicado."
+        }
+      }
+    }
+  },
+  "footer": {
+    "description": "A plataforma líder em gestão de pagamentos empresariais com criptomoedas. Segurança, controle e eficiência em um só lugar.",
+    "rights": "Todos os direitos reservados.",
+    "terms": "Termos",
+    "privacy": "Privacidade",
+    "cookies": "Cookies",
+    "links": {
+      "product": "Produto",
+      "features": "Recursos",
+      "security": "Segurança",
+      "pricing": "Planos",
+      "api": "API",
+      "company": "Empresa",
+      "about": "Sobre nós",
+      "blog": "Blog",
+      "careers": "Carreiras",
+      "press": "Imprensa",
+      "support": "Suporte",
+      "help": "Central de ajuda",
+      "contact": "Contato",
+      "docs": "Documentação",
+      "status": "Status do sistema",
+      "legal": "Legal",
+      "tos": "Termos de serviço",
+      "privacyPolicy": "Política de privacidade",
+      "cookiesPolicy": "Cookies",
+      "licenses": "Licenças"
+    }
+  }
+}

@@ -1,0 +1,233 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "features": "Fonctionnalités",
+    "security": "Sécurité",
+    "pricing": "Tarifs",
+    "contact": "Contact",
+    "login": "Connexion",
+    "signup": "Créer un compte"
+  },
+  "hero": {
+    "badge": "Plateforme de paiement entreprise",
+    "title": "Gestion centralisée des paiements en",
+    "titleHighlight": "cryptomonnaies",
+    "titleEnd": "pour les entreprises",
+    "subtitle": "Contrôlez les soldes, activations et paiements de chaque compte depuis un seul tableau de bord. Sécurité bancaire pour votre entreprise.",
+    "cta": "Créer un compte",
+    "ctaSecondary": "Connexion",
+    "stats": {
+      "volume": "Volume traité",
+      "companies": "Entreprises actives",
+      "uptime": "Disponibilité garantie",
+      "support": "Support dédié"
+    }
+  },
+  "benefits": {
+    "label": "Avantages",
+    "title": "Tout ce dont vous avez besoin pour gérer vos paiements",
+    "subtitle": "Quantum Ledger Business offre les outils les plus avancés pour la gestion des cryptomonnaies d'entreprise",
+    "items": {
+      "accounts": {
+        "title": "Contrôle total des comptes internes",
+        "description": "Gérez tous les comptes de votre entreprise depuis un seul tableau de bord centralisé avec une visibilité complète des soldes et mouvements."
+      },
+      "payments": {
+        "title": "Gestion des paiements d'entreprise",
+        "description": "Effectuez des paiements en masse, programmez des transferts et automatisez la distribution des fonds entre départements et employés."
+      },
+      "activation": {
+        "title": "Activation de comptes configurable",
+        "description": "Définissez des montants d'activation personnalisés pour chaque compte. Contrôle granulaire sur quand et comment les comptes sont activés."
+      },
+      "admin": {
+        "title": "Panneau d'administration avancé",
+        "description": "Outils d'administration complets avec rapports en temps réel, audit des transactions et gestion des rôles."
+      }
+    }
+  },
+  "features": {
+    "label": "Fonctionnalités",
+    "title": "Outils conçus pour les entreprises",
+    "subtitle": "Chaque fonctionnalité a été conçue en pensant aux besoins réels des entreprises qui gèrent des cryptomonnaies",
+    "cta": "Explorer toutes les fonctionnalités",
+    "items": {
+      "dashboard": {
+        "title": "Tableau de bord entreprise",
+        "description": "Vue unifiée de tous les soldes, comptes actifs et inactifs. Métriques en temps réel et alertes personnalisables.",
+        "features": ["Résumé des soldes", "Comptes actifs/inactifs", "Alertes en temps réel"]
+      },
+      "accounts": {
+        "title": "Gestion des comptes internes",
+        "description": "Créez, modifiez et désactivez les comptes des employés ou départements. Contrôle total sur les permissions et limites de chaque compte.",
+        "features": ["Créer et modifier des comptes", "Contrôle des permissions", "Limites personnalisées"]
+      },
+      "funds": {
+        "title": "Distribution des fonds",
+        "description": "L'administrateur définit combien d'argent va à chaque compte. Automatisez les paiements récurrents et les distributions programmées.",
+        "features": ["Allocation de fonds", "Paiements automatisés", "Distribution programmée"]
+      },
+      "activation": {
+        "title": "Notes d'activation",
+        "description": "Chaque compte a un montant d'activation défini par l'administrateur. Historique complet des activations et modifications.",
+        "features": ["Montants configurables", "Historique des modifications", "Notes détaillées"]
+      }
+    }
+  },
+  "security": {
+    "label": "Sécurité",
+    "title": "Sécurité bancaire pour vos actifs numériques",
+    "subtitle": "Nous protégeons vos cryptomonnaies avec les plus hauts standards de sécurité du secteur financier. Votre confiance est notre priorité.",
+    "certifications": "Certifications et conformité",
+    "items": {
+      "encryption": {
+        "title": "Chiffrement des données",
+        "description": "Toutes vos données sont protégées par un chiffrement AES-256, le même standard utilisé par les institutions bancaires."
+      },
+      "2fa": {
+        "title": "Authentification 2FA",
+        "description": "Ajoutez une couche de sécurité supplémentaire avec l'authentification à deux facteurs pour toutes les opérations critiques."
+      },
+      "roles": {
+        "title": "Contrôle d'accès par rôles",
+        "description": "Définissez des rôles personnalisés (Administrateur, Entreprise, Utilisateur) avec des permissions spécifiques pour chaque niveau."
+      }
+    },
+    "certs": {
+      "iso": "ISO 27001 Certifié",
+      "soc": "SOC 2 Type II",
+      "pci": "PCI DSS Compliant",
+      "gdpr": "RGPD Conforme"
+    }
+  },
+  "pricing": {
+    "label": "Tarifs",
+    "title": "Tarification transparente pour chaque besoin",
+    "subtitle": "Choisissez le plan qui correspond le mieux à la taille et aux besoins de votre entreprise",
+    "popular": "Le plus populaire",
+    "cta": "Commencer",
+    "ctaContact": "Contacter les ventes",
+    "plans": {
+      "basic": {
+        "name": "Basique",
+        "price": "99€",
+        "period": "/mois",
+        "description": "Idéal pour les petites entreprises débutant dans la crypto",
+        "features": [
+          "Jusqu'à 10 comptes internes",
+          "Rapports mensuels basiques",
+          "Support par email",
+          "Tableau de bord standard",
+          "Chiffrement des données"
+        ]
+      },
+      "pro": {
+        "name": "Pro",
+        "price": "299€",
+        "period": "/mois",
+        "description": "Pour les entreprises en croissance avec des besoins avancés",
+        "features": [
+          "Jusqu'à 50 comptes internes",
+          "Rapports avancés en temps réel",
+          "Support prioritaire 24/7",
+          "API d'intégration",
+          "Automatisation des paiements",
+          "Rôles personnalisés"
+        ]
+      },
+      "corporate": {
+        "name": "Entreprise",
+        "price": "Contacter",
+        "period": "",
+        "description": "Solution complète pour les grandes entreprises",
+        "features": [
+          "Comptes illimités",
+          "Rapports personnalisés",
+          "Gestionnaire de compte dédié",
+          "SLA garanti 99.99%",
+          "Intégration enterprise",
+          "Audit avancé",
+          "White-label disponible"
+        ]
+      }
+    }
+  },
+  "contact": {
+    "label": "Contact",
+    "title": "Des questions? Nous sommes là pour vous aider",
+    "subtitle": "Notre équipe est prête à répondre à vos questions et à vous aider à démarrer",
+    "form": {
+      "title": "Envoyez-nous un message",
+      "name": "Nom",
+      "namePlaceholder": "Votre nom",
+      "email": "Email",
+      "emailPlaceholder": "vous@email.com",
+      "company": "Entreprise (optionnel)",
+      "companyPlaceholder": "Nom de votre entreprise",
+      "message": "Message",
+      "messagePlaceholder": "Comment pouvons-nous vous aider?",
+      "submit": "Envoyer le message",
+      "success": "Message envoyé",
+      "successDesc": "Nous vous contacterons bientôt."
+    },
+    "info": {
+      "title": "Informations de contact",
+      "notifications": "Notifications",
+      "office": "Bureau"
+    },
+    "faq": {
+      "title": "Questions fréquentes",
+      "items": {
+        "activation": {
+          "question": "Comment fonctionne l'activation des comptes?",
+          "answer": "L'administrateur définit un montant d'activation pour chaque compte. Une fois ce montant déposé, le compte est automatiquement activé et l'utilisateur peut commencer à opérer."
+        },
+        "deposit": {
+          "question": "Combien de temps faut-il pour qu'un dépôt soit crédité?",
+          "answer": "Les dépôts en cryptomonnaies sont crédités une fois que la transaction a les confirmations nécessaires sur la blockchain. Généralement entre 10-30 minutes selon le réseau."
+        },
+        "crypto": {
+          "question": "Quelles cryptomonnaies sont prises en charge?",
+          "answer": "Nous prenons actuellement en charge Bitcoin (BTC), Ethereum (ETH), USDT, USDC et les principales altcoins. Nous ajoutons constamment de nouvelles cryptomonnaies."
+        },
+        "roles": {
+          "question": "Comment fonctionne le contrôle d'accès par rôles?",
+          "answer": "Il existe trois rôles principaux: Administrateur (contrôle total), Entreprise (gestion des comptes internes) et Utilisateur (opérations de base). Chaque rôle a des permissions spécifiques configurables."
+        },
+        "support": {
+          "question": "Quel support proposez-vous?",
+          "answer": "Nous offrons un support par email pour tous les plans et un support prioritaire 24/7 pour les plans Pro et Entreprise. Les plans Entreprise incluent un gestionnaire de compte dédié."
+        }
+      }
+    }
+  },
+  "footer": {
+    "description": "La plateforme leader de gestion des paiements d'entreprise en cryptomonnaies. Sécurité, contrôle et efficacité en un seul endroit.",
+    "rights": "Tous droits réservés.",
+    "terms": "Conditions",
+    "privacy": "Confidentialité",
+    "cookies": "Cookies",
+    "links": {
+      "product": "Produit",
+      "features": "Fonctionnalités",
+      "security": "Sécurité",
+      "pricing": "Tarifs",
+      "api": "API",
+      "company": "Entreprise",
+      "about": "À propos",
+      "blog": "Blog",
+      "careers": "Carrières",
+      "press": "Presse",
+      "support": "Support",
+      "help": "Centre d'aide",
+      "contact": "Contact",
+      "docs": "Documentation",
+      "status": "État du système",
+      "legal": "Légal",
+      "tos": "Conditions d'utilisation",
+      "privacyPolicy": "Politique de confidentialité",
+      "cookiesPolicy": "Cookies",
+      "licenses": "Licences"
+    }
+  }
+}

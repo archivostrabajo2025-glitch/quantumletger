@@ -1,0 +1,233 @@
+{
+  "nav": {
+    "home": "Home",
+    "features": "Features",
+    "security": "Security",
+    "pricing": "Pricing",
+    "contact": "Contact",
+    "login": "Log in",
+    "signup": "Sign up"
+  },
+  "hero": {
+    "badge": "Enterprise payment platform",
+    "title": "Centralized management of",
+    "titleHighlight": "cryptocurrency",
+    "titleEnd": "payments for businesses",
+    "subtitle": "Control balances, activations, and payments for each account from a single dashboard. Bank-level security for your business.",
+    "cta": "Create account",
+    "ctaSecondary": "Log in",
+    "stats": {
+      "volume": "Volume processed",
+      "companies": "Active companies",
+      "uptime": "Guaranteed uptime",
+      "support": "Dedicated support"
+    }
+  },
+  "benefits": {
+    "label": "Benefits",
+    "title": "Everything you need to manage your payments",
+    "subtitle": "Quantum Ledger Business offers the most advanced tools for enterprise cryptocurrency management",
+    "items": {
+      "accounts": {
+        "title": "Full control of internal accounts",
+        "description": "Manage all your company accounts from a single centralized dashboard with complete visibility of balances and movements."
+      },
+      "payments": {
+        "title": "Enterprise payment management",
+        "description": "Make bulk payments, schedule transfers, and automate fund distribution between departments and employees."
+      },
+      "activation": {
+        "title": "Configurable account activation",
+        "description": "Define custom activation amounts for each account. Granular control over when and how accounts are activated."
+      },
+      "admin": {
+        "title": "Advanced administration panel",
+        "description": "Complete administration tools with real-time reports, transaction auditing, and role management."
+      }
+    }
+  },
+  "features": {
+    "label": "Features",
+    "title": "Tools designed for businesses",
+    "subtitle": "Each feature has been designed with the real needs of cryptocurrency-handling businesses in mind",
+    "cta": "Explore all features",
+    "items": {
+      "dashboard": {
+        "title": "Enterprise control panel",
+        "description": "Unified view of all balances, active and inactive accounts. Real-time metrics and customizable alerts.",
+        "features": ["Balance summary", "Active/inactive accounts", "Real-time alerts"]
+      },
+      "accounts": {
+        "title": "Internal account management",
+        "description": "Create, edit, and deactivate employee or department accounts. Full control over permissions and limits for each account.",
+        "features": ["Create and edit accounts", "Permission control", "Custom limits"]
+      },
+      "funds": {
+        "title": "Fund distribution",
+        "description": "The administrator defines how much money goes to each account. Automate recurring payments and scheduled distributions.",
+        "features": ["Fund allocation", "Automated payments", "Scheduled distribution"]
+      },
+      "activation": {
+        "title": "Activation notes",
+        "description": "Each account has an activation amount defined by the administrator. Complete history of activations and changes.",
+        "features": ["Configurable amounts", "Change history", "Detailed notes"]
+      }
+    }
+  },
+  "security": {
+    "label": "Security",
+    "title": "Bank-level security for your digital assets",
+    "subtitle": "We protect your cryptocurrencies with the highest security standards in the financial sector. Your trust is our priority.",
+    "certifications": "Certifications and compliance",
+    "items": {
+      "encryption": {
+        "title": "Data encryption",
+        "description": "All your data is protected with AES-256 encryption, the same standard used by banking institutions."
+      },
+      "2fa": {
+        "title": "2FA Authentication",
+        "description": "Add an extra layer of security with two-factor authentication for all critical operations."
+      },
+      "roles": {
+        "title": "Role-based access control",
+        "description": "Define custom roles (Administrator, Company, User) with specific permissions for each level."
+      }
+    },
+    "certs": {
+      "iso": "ISO 27001 Certified",
+      "soc": "SOC 2 Type II",
+      "pci": "PCI DSS Compliant",
+      "gdpr": "GDPR Compliant"
+    }
+  },
+  "pricing": {
+    "label": "Pricing",
+    "title": "Transparent pricing for every need",
+    "subtitle": "Choose the plan that best fits your company's size and needs",
+    "popular": "Most popular",
+    "cta": "Get started",
+    "ctaContact": "Contact sales",
+    "plans": {
+      "basic": {
+        "name": "Basic",
+        "price": "$99",
+        "period": "/month",
+        "description": "Ideal for small businesses starting with crypto",
+        "features": [
+          "Up to 10 internal accounts",
+          "Basic monthly reports",
+          "Email support",
+          "Standard control panel",
+          "Data encryption"
+        ]
+      },
+      "pro": {
+        "name": "Pro",
+        "price": "$299",
+        "period": "/month",
+        "description": "For growing companies with advanced needs",
+        "features": [
+          "Up to 50 internal accounts",
+          "Advanced real-time reports",
+          "24/7 priority support",
+          "Integration API",
+          "Payment automation",
+          "Custom roles"
+        ]
+      },
+      "corporate": {
+        "name": "Corporate",
+        "price": "Contact",
+        "period": "",
+        "description": "Complete solution for large corporations",
+        "features": [
+          "Unlimited accounts",
+          "Custom reports",
+          "Dedicated account manager",
+          "99.99% guaranteed SLA",
+          "Enterprise integration",
+          "Advanced auditing",
+          "White-label available"
+        ]
+      }
+    }
+  },
+  "contact": {
+    "label": "Contact",
+    "title": "Have questions? We're here to help",
+    "subtitle": "Our team is ready to answer your questions and help you get started",
+    "form": {
+      "title": "Send us a message",
+      "name": "Name",
+      "namePlaceholder": "Your name",
+      "email": "Email",
+      "emailPlaceholder": "you@email.com",
+      "company": "Company (optional)",
+      "companyPlaceholder": "Your company name",
+      "message": "Message",
+      "messagePlaceholder": "How can we help you?",
+      "submit": "Send message",
+      "success": "Message sent",
+      "successDesc": "We will get in touch with you soon."
+    },
+    "info": {
+      "title": "Contact information",
+      "notifications": "Notifications",
+      "office": "Office"
+    },
+    "faq": {
+      "title": "Frequently asked questions",
+      "items": {
+        "activation": {
+          "question": "How does account activation work?",
+          "answer": "The administrator sets an activation amount for each account. Once that amount is deposited, the account is automatically activated and the user can start operating."
+        },
+        "deposit": {
+          "question": "How long does it take for a deposit to be credited?",
+          "answer": "Cryptocurrency deposits are credited once the transaction has the necessary confirmations on the blockchain. Generally between 10-30 minutes depending on the network."
+        },
+        "crypto": {
+          "question": "What cryptocurrencies are supported?",
+          "answer": "We currently support Bitcoin (BTC), Ethereum (ETH), USDT, USDC, and major altcoins. We are constantly adding new cryptocurrencies."
+        },
+        "roles": {
+          "question": "How does role-based access control work?",
+          "answer": "There are three main roles: Administrator (full control), Company (internal account management), and User (basic operations). Each role has specific configurable permissions."
+        },
+        "support": {
+          "question": "What support do you offer?",
+          "answer": "We offer email support for all plans, and 24/7 priority support for Pro and Corporate plans. Corporate plans include a dedicated account manager."
+        }
+      }
+    }
+  },
+  "footer": {
+    "description": "The leading platform for enterprise cryptocurrency payment management. Security, control, and efficiency in one place.",
+    "rights": "All rights reserved.",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "cookies": "Cookies",
+    "links": {
+      "product": "Product",
+      "features": "Features",
+      "security": "Security",
+      "pricing": "Pricing",
+      "api": "API",
+      "company": "Company",
+      "about": "About us",
+      "blog": "Blog",
+      "careers": "Careers",
+      "press": "Press",
+      "support": "Support",
+      "help": "Help center",
+      "contact": "Contact",
+      "docs": "Documentation",
+      "status": "System status",
+      "legal": "Legal",
+      "tos": "Terms of service",
+      "privacyPolicy": "Privacy policy",
+      "cookiesPolicy": "Cookies",
+      "licenses": "Licenses"
+    }
+  }
+}

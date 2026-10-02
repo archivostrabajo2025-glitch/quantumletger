@@ -1,0 +1,233 @@
+{
+  "nav": {
+    "home": "首页",
+    "features": "功能",
+    "security": "安全",
+    "pricing": "价格",
+    "contact": "联系",
+    "login": "登录",
+    "signup": "注册"
+  },
+  "hero": {
+    "badge": "企业支付平台",
+    "title": "企业",
+    "titleHighlight": "加密货币",
+    "titleEnd": "支付集中管理",
+    "subtitle": "从单一控制面板控制每个账户的余额、激活和支付。为您的企业提供银行级安全保障。",
+    "cta": "创建账户",
+    "ctaSecondary": "登录",
+    "stats": {
+      "volume": "处理量",
+      "companies": "活跃企业",
+      "uptime": "保证正常运行时间",
+      "support": "专属支持"
+    }
+  },
+  "benefits": {
+    "label": "优势",
+    "title": "管理支付所需的一切",
+    "subtitle": "Quantum Ledger Business 提供最先进的企业加密货币管理工具",
+    "items": {
+      "accounts": {
+        "title": "内部账户全面控制",
+        "description": "从单一集中式控制面板管理公司所有账户，完整查看余额和交易动态。"
+      },
+      "payments": {
+        "title": "企业支付管理",
+        "description": "进行批量支付，安排转账，并自动化部门和员工之间的资金分配。"
+      },
+      "activation": {
+        "title": "可配置账户激活",
+        "description": "为每个账户定义自定义激活金额。精细控制账户何时及如何激活。"
+      },
+      "admin": {
+        "title": "高级管理面板",
+        "description": "完整的管理工具，包括实时报告、交易审计和角色管理。"
+      }
+    }
+  },
+  "features": {
+    "label": "功能",
+    "title": "为企业设计的工具",
+    "subtitle": "每个功能都是根据处理加密货币企业的实际需求而设计的",
+    "cta": "探索所有功能",
+    "items": {
+      "dashboard": {
+        "title": "企业控制面板",
+        "description": "统一查看所有余额、活跃和非活跃账户。实时指标和可自定义警报。",
+        "features": ["余额摘要", "活跃/非活跃账户", "实时警报"]
+      },
+      "accounts": {
+        "title": "内部账户管理",
+        "description": "创建、编辑和停用员工或部门账户。完全控制每个账户的权限和限制。",
+        "features": ["创建和编辑账户", "权限控制", "自定义限制"]
+      },
+      "funds": {
+        "title": "资金分配",
+        "description": "管理员定义每个账户的资金分配。自动化定期付款和计划分配。",
+        "features": ["资金分配", "自动化支付", "计划分配"]
+      },
+      "activation": {
+        "title": "激活备注",
+        "description": "每个账户都有管理员定义的激活金额。激活和更改的完整历史记录。",
+        "features": ["可配置金额", "更改历史", "详细备注"]
+      }
+    }
+  },
+  "security": {
+    "label": "安全",
+    "title": "为您的数字资产提供银行级安全保障",
+    "subtitle": "我们以金融行业最高安全标准保护您的加密货币。您的信任是我们的首要任务。",
+    "certifications": "认证与合规",
+    "items": {
+      "encryption": {
+        "title": "数据加密",
+        "description": "所有数据都受到AES-256加密保护，这是银行机构使用的相同标准。"
+      },
+      "2fa": {
+        "title": "双因素认证",
+        "description": "为所有关键操作添加额外的安全层，使用双因素认证。"
+      },
+      "roles": {
+        "title": "基于角色的访问控制",
+        "description": "定义自定义角色（管理员、企业、用户），为每个级别设置特定权限。"
+      }
+    },
+    "certs": {
+      "iso": "ISO 27001 认证",
+      "soc": "SOC 2 Type II",
+      "pci": "PCI DSS 合规",
+      "gdpr": "GDPR 合规"
+    }
+  },
+  "pricing": {
+    "label": "价格",
+    "title": "满足各种需求的透明定价",
+    "subtitle": "选择最适合您公司规模和需求的计划",
+    "popular": "最受欢迎",
+    "cta": "立即开始",
+    "ctaContact": "联系销售",
+    "plans": {
+      "basic": {
+        "name": "基础版",
+        "price": "$99",
+        "period": "/月",
+        "description": "适合刚开始使用加密货币的小型企业",
+        "features": [
+          "最多10个内部账户",
+          "基础月度报告",
+          "邮件支持",
+          "标准控制面板",
+          "数据加密"
+        ]
+      },
+      "pro": {
+        "name": "专业版",
+        "price": "$299",
+        "period": "/月",
+        "description": "适合有高级需求的成长型企业",
+        "features": [
+          "最多50个内部账户",
+          "高级实时报告",
+          "24/7优先支持",
+          "集成API",
+          "支付自动化",
+          "自定义角色"
+        ]
+      },
+      "corporate": {
+        "name": "企业版",
+        "price": "联系我们",
+        "period": "",
+        "description": "大型企业的完整解决方案",
+        "features": [
+          "无限账户",
+          "自定义报告",
+          "专属客户经理",
+          "99.99% SLA保证",
+          "企业集成",
+          "高级审计",
+          "白标可用"
+        ]
+      }
+    }
+  },
+  "contact": {
+    "label": "联系",
+    "title": "有问题？我们随时为您服务",
+    "subtitle": "我们的团队随时准备回答您的问题并帮助您开始",
+    "form": {
+      "title": "给我们发消息",
+      "name": "姓名",
+      "namePlaceholder": "您的姓名",
+      "email": "邮箱",
+      "emailPlaceholder": "you@email.com",
+      "company": "公司（可选）",
+      "companyPlaceholder": "您的公司名称",
+      "message": "消息",
+      "messagePlaceholder": "我们能帮您什么？",
+      "submit": "发送消息",
+      "success": "消息已发送",
+      "successDesc": "我们会尽快与您联系。"
+    },
+    "info": {
+      "title": "联系信息",
+      "notifications": "通知",
+      "office": "办公室"
+    },
+    "faq": {
+      "title": "常见问题",
+      "items": {
+        "activation": {
+          "question": "账户激活如何工作？",
+          "answer": "管理员为每个账户设置激活金额。一旦存入该金额，账户将自动激活，用户可以开始操作。"
+        },
+        "deposit": {
+          "question": "存款到账需要多长时间？",
+          "answer": "加密货币存款在交易获得区块链上必要的确认后到账。通常根据网络不同需要10-30分钟。"
+        },
+        "crypto": {
+          "question": "支持哪些加密货币？",
+          "answer": "我们目前支持比特币(BTC)、以太坊(ETH)、USDT、USDC和主要山寨币。我们不断添加新的加密货币。"
+        },
+        "roles": {
+          "question": "基于角色的访问控制如何工作？",
+          "answer": "有三个主要角色：管理员（完全控制）、企业（内部账户管理）和用户（基本操作）。每个角色都有特定的可配置权限。"
+        },
+        "support": {
+          "question": "你们提供什么支持？",
+          "answer": "我们为所有计划提供邮件支持，为专业版和企业版计划提供24/7优先支持。企业版计划包括专属客户经理。"
+        }
+      }
+    }
+  },
+  "footer": {
+    "description": "领先的企业加密货币支付管理平台。安全、控制和效率合而为一。",
+    "rights": "保留所有权利。",
+    "terms": "条款",
+    "privacy": "隐私",
+    "cookies": "Cookie",
+    "links": {
+      "product": "产品",
+      "features": "功能",
+      "security": "安全",
+      "pricing": "价格",
+      "api": "API",
+      "company": "公司",
+      "about": "关于我们",
+      "blog": "博客",
+      "careers": "招聘",
+      "press": "新闻",
+      "support": "支持",
+      "help": "帮助中心",
+      "contact": "联系",
+      "docs": "文档",
+      "status": "系统状态",
+      "legal": "法律",
+      "tos": "服务条款",
+      "privacyPolicy": "隐私政策",
+      "cookiesPolicy": "Cookie政策",
+      "licenses": "许可证"
+    }
+  }
+}

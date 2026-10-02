@@ -1,0 +1,1 @@
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS skip_login_otp boolean NOT NULL DEFAULT false;

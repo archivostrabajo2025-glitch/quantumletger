@@ -1,0 +1,24 @@
+project_id = "dhoqhwkvzahvaapjcxtn"
+
+[functions]
+  [functions.auth-email-hook]
+    verify_jwt = false
+  [functions.check-trusted-device]
+    verify_jwt = false
+  [functions.get-all-profiles]
+    verify_jwt = false
+  [functions.register-trusted-device]
+    verify_jwt = false
+  [functions.reset-password-with-otp]
+    verify_jwt = false
+  [functions.send-otp]
+    verify_jwt = false
+  [functions.send-smtp-email]
+    verify_jwt = false
+  [functions.update-user-balance]
+    verify_jwt = false
+  [functions.verify-otp]
+    verify_jwt = false
+
+[functions.preview-transactional-email]
+verify_jwt = false

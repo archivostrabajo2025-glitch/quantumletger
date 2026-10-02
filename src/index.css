@@ -1,0 +1,173 @@
+@import "@fontsource/dm-sans/400.css";
+@import "@fontsource/dm-sans/500.css";
+@import "@fontsource/dm-sans/600.css";
+@import "@fontsource/dm-sans/700.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Quantum Ledger Business - Light Corporate Blue Design System */
+    --background: 210 40% 98%;
+    --foreground: 214 45% 18%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 214 45% 18%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 214 45% 18%;
+
+    /* Primary - Bright Corporate Blue */
+    --primary: 214 85% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary - Very Light Blue */
+    --secondary: 210 45% 96%;
+    --secondary-foreground: 214 45% 25%;
+
+    /* Muted */
+    --muted: 210 35% 96%;
+    --muted-foreground: 214 20% 45%;
+
+    /* Accent - Sky Blue */
+    --accent: 200 90% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 210 30% 90%;
+    --input: 210 30% 90%;
+    --ring: 214 85% 50%;
+
+    --radius: 0.75rem;
+
+    /* Custom tokens */
+    --gradient-primary: linear-gradient(135deg, hsl(214 85% 50%) 0%, hsl(200 90% 55%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(200 90% 50%) 0%, hsl(190 85% 55%) 100%);
+    --gradient-hero: linear-gradient(180deg, hsl(210 40% 98%) 0%, hsl(210 45% 95%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(210 35% 98%) 100%);
+    
+    --shadow-sm: 0 1px 2px 0 hsl(214 45% 18% / 0.04);
+    --shadow-md: 0 4px 6px -1px hsl(214 45% 18% / 0.08), 0 2px 4px -2px hsl(214 45% 18% / 0.06);
+    --shadow-lg: 0 10px 15px -3px hsl(214 45% 18% / 0.08), 0 4px 6px -4px hsl(214 45% 18% / 0.06);
+    --shadow-xl: 0 20px 25px -5px hsl(214 45% 18% / 0.08), 0 8px 10px -6px hsl(214 45% 18% / 0.06);
+    --shadow-glow: 0 0 40px hsl(200 90% 50% / 0.2);
+    --shadow-primary-glow: 0 0 30px hsl(214 85% 50% / 0.25);
+
+    /* Sidebar */
+    --sidebar-background: 210 40% 99%;
+    --sidebar-foreground: 214 40% 25%;
+    --sidebar-primary: 214 85% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 45% 96%;
+    --sidebar-accent-foreground: 214 45% 20%;
+    --sidebar-border: 210 30% 92%;
+    --sidebar-ring: 214 85% 50%;
+  }
+
+  .dark {
+    --background: 214 35% 8%;
+    --foreground: 214 15% 95%;
+
+    --card: 214 30% 12%;
+    --card-foreground: 214 15% 95%;
+
+    --popover: 214 30% 12%;
+    --popover-foreground: 214 15% 95%;
+
+    --primary: 214 85% 55%;
+    --primary-foreground: 214 35% 8%;
+
+    --secondary: 214 25% 18%;
+    --secondary-foreground: 214 15% 90%;
+
+    --muted: 214 25% 15%;
+    --muted-foreground: 214 15% 60%;
+
+    --accent: 214 90% 50%;
+    --accent-foreground: 214 35% 8%;
+
+    --destructive: 0 62.8% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 214 25% 18%;
+    --input: 214 25% 18%;
+    --ring: 214 85% 55%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(214 85% 55%) 0%, hsl(214 80% 65%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(214 90% 50%) 0%, hsl(214 85% 60%) 100%);
+    --gradient-hero: linear-gradient(180deg, hsl(214 35% 8%) 0%, hsl(214 30% 12%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(214 30% 12%) 0%, hsl(214 28% 15%) 100%);
+
+    --sidebar-background: 214 35% 10%;
+    --sidebar-foreground: 214 15% 95%;
+    --sidebar-primary: 214 85% 55%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 214 30% 15%;
+    --sidebar-accent-foreground: 214 15% 95%;
+    --sidebar-border: 214 28% 18%;
+    --sidebar-ring: 214 90% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: "DM Sans", system-ui, sans-serif;
+  }
+}
+
+@layer utilities {
+  .text-gradient-primary {
+    @apply bg-clip-text text-transparent;
+    background-image: var(--gradient-primary);
+  }
+
+  .text-gradient-accent {
+    @apply bg-clip-text text-transparent;
+    background-image: var(--gradient-accent);
+  }
+
+  .bg-gradient-primary {
+    background-image: var(--gradient-primary);
+  }
+
+  .bg-gradient-accent {
+    background-image: var(--gradient-accent);
+  }
+
+  .bg-gradient-hero {
+    background-image: var(--gradient-hero);
+  }
+
+  .bg-gradient-card {
+    background-image: var(--gradient-card);
+  }
+
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .shadow-primary-glow {
+    box-shadow: var(--shadow-primary-glow);
+  }
+
+  .glass {
+    @apply backdrop-blur-xl bg-card/80 border border-border/50;
+  }
+
+  .glass-strong {
+    @apply backdrop-blur-2xl bg-card/90 border border-border/60;
+  }
+}

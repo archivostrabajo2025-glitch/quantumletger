@@ -1,0 +1,233 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "features": "Características",
+    "security": "Seguridad",
+    "pricing": "Planes",
+    "contact": "Contacto",
+    "login": "Iniciar sesión",
+    "signup": "Crear cuenta"
+  },
+  "hero": {
+    "badge": "Plataforma de gestión financiera empresarial",
+    "title": "Gestión centralizada de",
+    "titleHighlight": "pagos y finanzas",
+    "titleEnd": "para empresas",
+    "subtitle": "Controle los saldos, activaciones y pagos de cada cuenta desde un solo panel. Seguridad de nivel bancario para su empresa.",
+    "cta": "Crear cuenta",
+    "ctaSecondary": "Iniciar sesión",
+    "stats": {
+      "volume": "Volumen procesado",
+      "companies": "Empresas activas",
+      "uptime": "Uptime garantizado",
+      "support": "Soporte dedicado"
+    }
+  },
+  "benefits": {
+    "label": "Beneficios",
+    "title": "Todo lo que necesita para gestionar sus pagos",
+    "subtitle": "Quantum Ledger Business ofrece las herramientas más avanzadas para la gestión financiera empresarial",
+    "items": {
+      "accounts": {
+        "title": "Control total de cuentas internas",
+        "description": "Administre todas las cuentas de su empresa desde un único panel centralizado con visibilidad completa de saldos y movimientos."
+      },
+      "payments": {
+        "title": "Gestión de pagos empresariales",
+        "description": "Realice pagos masivos, programe transferencias y automatice la distribución de fondos entre departamentos y empleados."
+      },
+      "activation": {
+        "title": "Activación de cuentas configurables",
+        "description": "Defina montos de activación personalizados para cada cuenta. Control granular sobre cuándo y cómo se activan las cuentas."
+      },
+      "admin": {
+        "title": "Panel de administración avanzado",
+        "description": "Herramientas completas de administración con reportes en tiempo real, auditoría de transacciones y gestión de roles."
+      }
+    }
+  },
+  "features": {
+    "label": "Características",
+    "title": "Herramientas diseñadas para empresas",
+    "subtitle": "Cada función ha sido diseñada pensando en las necesidades reales de las empresas modernas",
+    "cta": "Explorar todas las características",
+    "items": {
+      "dashboard": {
+        "title": "Panel de control empresarial",
+        "description": "Vista unificada de todos los saldos, cuentas activas e inactivas. Métricas en tiempo real y alertas personalizables.",
+        "features": ["Resumen de saldos", "Cuentas activas/inactivas", "Alertas en tiempo real"]
+      },
+      "accounts": {
+        "title": "Gestión de cuentas internas",
+        "description": "Cree, edite y desactive cuentas de empleados o departamentos. Control total sobre los permisos y límites de cada cuenta.",
+        "features": ["Crear y editar cuentas", "Control de permisos", "Límites personalizados"]
+      },
+      "funds": {
+        "title": "Distribución de fondos",
+        "description": "El administrador define cuánto dinero llega a cada cuenta. Automatice pagos recurrentes y distribuciones programadas.",
+        "features": ["Asignación de fondos", "Pagos automatizados", "Distribución programada"]
+      },
+      "activation": {
+        "title": "Notas de activación",
+        "description": "Cada cuenta tiene un monto de activación definido por el administrador. Historial completo de activaciones y cambios.",
+        "features": ["Montos configurables", "Historial de cambios", "Notas detalladas"]
+      }
+    }
+  },
+  "security": {
+    "label": "Seguridad",
+    "title": "Seguridad de nivel bancario para sus activos",
+    "subtitle": "Protegemos sus fondos con los más altos estándares de seguridad del sector financiero. Su confianza es nuestra prioridad.",
+    "certifications": "Certificaciones y cumplimiento",
+    "items": {
+      "encryption": {
+        "title": "Cifrado de datos",
+        "description": "Todos sus datos están protegidos con cifrado AES-256, el mismo estándar utilizado por instituciones bancarias."
+      },
+      "2fa": {
+        "title": "Autenticación 2FA",
+        "description": "Agregue una capa extra de seguridad con autenticación de dos factores para todas las operaciones críticas."
+      },
+      "roles": {
+        "title": "Control de acceso por roles",
+        "description": "Defina roles personalizados (Administrador, Empresa, Usuario) con permisos específicos para cada nivel."
+      }
+    },
+    "certs": {
+      "iso": "ISO 27001 Certificado",
+      "soc": "SOC 2 Type II",
+      "pci": "PCI DSS Compliant",
+      "gdpr": "GDPR Compliant"
+    }
+  },
+  "pricing": {
+    "label": "Planes",
+    "title": "Precios transparentes para cada necesidad",
+    "subtitle": "Elija el plan que mejor se adapte al tamaño y necesidades de su empresa",
+    "popular": "Más popular",
+    "cta": "Comenzar ahora",
+    "ctaContact": "Contactar ventas",
+    "plans": {
+      "basic": {
+        "name": "Básico",
+        "price": "$99",
+        "period": "/mes",
+        "description": "Ideal para pequeñas empresas que inician",
+        "features": [
+          "Hasta 10 cuentas internas",
+          "Reportes básicos mensuales",
+          "Soporte por email",
+          "Panel de control estándar",
+          "Cifrado de datos"
+        ]
+      },
+      "pro": {
+        "name": "Pro",
+        "price": "$299",
+        "period": "/mes",
+        "description": "Para empresas en crecimiento con necesidades avanzadas",
+        "features": [
+          "Hasta 50 cuentas internas",
+          "Reportes avanzados en tiempo real",
+          "Soporte prioritario 24/7",
+          "API de integración",
+          "Automatización de pagos",
+          "Roles personalizados"
+        ]
+      },
+      "corporate": {
+        "name": "Corporativo",
+        "price": "Contactar",
+        "period": "",
+        "description": "Solución completa para grandes corporaciones",
+        "features": [
+          "Cuentas ilimitadas",
+          "Reportes personalizados",
+          "Gerente de cuenta dedicado",
+          "SLA garantizado 99.99%",
+          "Integración enterprise",
+          "Auditoría avanzada",
+          "White-label disponible"
+        ]
+      }
+    }
+  },
+  "contact": {
+    "label": "Contacto",
+    "title": "¿Tienes preguntas? Estamos aquí para ayudarte",
+    "subtitle": "Nuestro equipo está listo para resolver tus dudas y ayudarte a comenzar",
+    "form": {
+      "title": "Envíanos un mensaje",
+      "name": "Nombre",
+      "namePlaceholder": "Tu nombre",
+      "email": "Email",
+      "emailPlaceholder": "tu@email.com",
+      "company": "Empresa (opcional)",
+      "companyPlaceholder": "Nombre de tu empresa",
+      "message": "Mensaje",
+      "messagePlaceholder": "¿En qué podemos ayudarte?",
+      "submit": "Enviar mensaje",
+      "success": "Mensaje enviado",
+      "successDesc": "Nos pondremos en contacto contigo pronto."
+    },
+    "info": {
+      "title": "Información de contacto",
+      "notifications": "Notificaciones",
+      "office": "Oficina"
+    },
+    "faq": {
+      "title": "Preguntas frecuentes",
+      "items": {
+        "activation": {
+          "question": "¿Cómo funciona la activación de cuentas?",
+          "answer": "El administrador define un monto de activación para cada cuenta. Una vez que se deposita dicho monto, la cuenta se activa automáticamente y el usuario puede comenzar a operar."
+        },
+        "deposit": {
+          "question": "¿Cuánto tiempo tarda en acreditarse un depósito?",
+          "answer": "Los depósitos se acreditan de forma instantánea una vez verificados. Generalmente el proceso toma entre 5-15 minutos dependiendo del método de pago."
+        },
+        "payment": {
+          "question": "¿Qué métodos de pago son compatibles?",
+          "answer": "Aceptamos transferencias bancarias, pagos con tarjeta y otros métodos de pago electrónicos. Estamos constantemente agregando nuevas opciones."
+        },
+        "roles": {
+          "question": "¿Cómo funciona el control de acceso por roles?",
+          "answer": "Existen tres roles principales: Administrador (control total), Empresa (gestión de cuentas internas) y Usuario (operaciones básicas). Cada rol tiene permisos específicos configurables."
+        },
+        "support": {
+          "question": "¿Qué soporte ofrecen?",
+          "answer": "Ofrecemos soporte por email para todos los planes, y soporte prioritario 24/7 para planes Pro y Corporativo. Los planes Corporativos incluyen un gerente de cuenta dedicado."
+        }
+      }
+    }
+  },
+  "footer": {
+    "description": "La plataforma líder en gestión de pagos y finanzas empresariales. Seguridad, control y eficiencia en un solo lugar.",
+    "rights": "Todos los derechos reservados.",
+    "terms": "Términos",
+    "privacy": "Privacidad",
+    "cookies": "Cookies",
+    "links": {
+      "product": "Producto",
+      "features": "Características",
+      "security": "Seguridad",
+      "pricing": "Planes",
+      "api": "API",
+      "company": "Empresa",
+      "about": "Sobre nosotros",
+      "blog": "Blog",
+      "careers": "Carreras",
+      "press": "Prensa",
+      "support": "Soporte",
+      "help": "Centro de ayuda",
+      "contact": "Contacto",
+      "docs": "Documentación",
+      "status": "Estado del sistema",
+      "legal": "Legal",
+      "tos": "Términos de servicio",
+      "privacyPolicy": "Política de privacidad",
+      "cookiesPolicy": "Cookies",
+      "licenses": "Licencias"
+    }
+  }
+}
