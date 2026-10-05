@@ -10,11 +10,13 @@ The frontend uses the Node API in `server/index.js`; Supabase is not used for au
 4. To send password-reset, welcome, or admin document emails, configure `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASSWORD`, and `SMTP_FROM` in Render.
 5. After `/api/health` reports `{ "ok": true }`, test a new signup and confirm it appears in Admin → Verification. Then move the custom domain to this new service.
 
+See `.env.example` for the complete list of environment variables used by the API, the Vite client, and local mode. Values are set in the Render dashboard (or in `.env` for local development); none are required at build time for a same-origin deploy.
+
 The existing Static Site cannot host the API. Keep it until the new Web Service is healthy, then attach the custom domain to the new service. Accounts and documents previously stored elsewhere are not copied automatically; the new database starts empty. Password recovery/email delivery also remains unavailable until SMTP is configured. Render's free web service sleeps after inactivity, and Neon Free has usage/storage limits.
 
 ## Literal local mode
 
-Run `npm run dev:local`, then open `http://localhost:8082`. This starts the API on `127.0.0.1:10000` and the Vite site locally. It requires no cloud account, PostgreSQL server, or Supabase credentials. Local test records and uploaded documents are stored in the ignored `data/local-db.json` file.
+Run `npm run dev:local`, then open `http://localhost:8082`. This starts the API on `127.0.0.1:10000` and the Vite site locally. It requires no cloud account, PostgreSQL server, or Supabase credentials. Local test records and uploaded documents are stored in the ignored `data/local-db.json` file. You may override the local admin and API port with `LOCAL_ADMIN_EMAIL`, `LOCAL_ADMIN_PASSWORD`, and `LOCAL_API_PORT` (see `.env.example`).
 
 Local admin test login: `admin@quantumledger.local` / `Admin123!`. This account is for local testing only. Local signups are visible only to the local admin on this computer; they are not shared with the public Render site. Local mode does not send email.
 
