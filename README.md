@@ -6,7 +6,7 @@ The frontend uses the Node API in `server/index.js`; Supabase is not used for au
 
 1. Create a Neon Free PostgreSQL project and copy its pooled connection string.
 2. Create a new Render Web Service from this repository using the root `render.yaml` (plan: free).
-3. Set `DATABASE_URL` to the Neon connection string. Set `ADMIN_EMAIL` and a new `ADMIN_PASSWORD` (at least 12 characters) for the first admin account. Render can generate `APP_TOKEN_SECRET`.
+3. Set `DATABASE_URL` to the Neon connection string. The blueprint creates `admin@quantumledgerbusiness.com` and generates its password and `APP_TOKEN_SECRET`; retrieve the generated password from the service's Render Environment page.
 4. To send password-reset, welcome, or admin document emails, configure `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASSWORD`, and `SMTP_FROM` in Render.
 5. After `/api/health` reports `{ "ok": true }`, test a new signup and confirm it appears in Admin → Verification. Then move the custom domain to this new service.
 

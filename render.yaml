@@ -14,8 +14,8 @@ services:
       - key: APP_TOKEN_SECRET
         generateValue: true
       - key: ADMIN_EMAIL
-        sync: false
+        value: admin@quantumledgerbusiness.com
       - key: ADMIN_PASSWORD
-        sync: false
+        generateValue: true
       - key: ADMIN_NAME
         value: Administrador
