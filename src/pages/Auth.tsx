@@ -416,20 +416,26 @@ const Auth = () => {
         }
       }
 
-      // Update profile with the document URLs and ID number
+      // Ensure the profile row exists and is marked as pending so admins can see the user immediately.
       await supabase
         .from('profiles')
-        .update({ 
+        .upsert({
+          user_id: authData.user.id,
+          email: signupEmail,
+          full_name: signupFullName,
+          status: 'pending',
+          verification_status: 'pending',
           proof_of_address_url: signupProofOfAddressFile ? `${authData.user.id}/proof_of_address.${signupProofOfAddressFile.name.split('.').pop()}` : null,
           proof_of_address_type: signupProofOfAddressType,
           id_document_number: signupIdDocumentNumber,
           nationality: signupNationality,
+          country: signupCountry,
           full_address: signupFullAddress,
           phone: signupPhone,
           birth_date: signupBirthDate,
           account_type: signupAccountType,
-        })
-        .eq('user_id', authData.user.id);
+          updated_at: new Date().toISOString(),
+        }, { onConflict: 'user_id' });
     }
 
     try {
@@ -581,24 +587,23 @@ const Auth = () => {
 
     setIsLoading(true);
     try {
-      // Use Supabase native password reset (no OTP email)
-      const { error } = await supabase.auth.resetPasswordForEmail(forgotPasswordEmail, {
-        redirectTo: `${window.location.origin}/auth`,
+      const { error } = await supabase.functions.invoke("send-otp", {
+        body: { email: forgotPasswordEmail, type: "password_reset" },
       });
 
       if (error) throw error;
 
       toast({
-        title: "Enlace enviado",
-        description: "Si el email existe, recibirás un enlace para restablecer tu contraseña.",
+        title: "Código enviado",
+        description: "Si el correo está registrado, recibirás un código para restablecer tu contraseña.",
       });
-      setShowForgotPassword(false);
-      setForgotPasswordEmail("");
+      setShowForgotPasswordOtp(true);
+      setResendCooldown(60);
     } catch (error: any) {
       console.error("Error sending password reset:", error);
       toast({
         title: "Error",
-        description: "No pudimos procesar tu solicitud. Intenta de nuevo.",
+        description: error.message || "No pudimos procesar tu solicitud. Intenta de nuevo.",
         variant: "destructive",
       });
     }

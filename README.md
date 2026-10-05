@@ -1,4 +1,26 @@
-# Welcome to your Lovable project
+# Quantum Ledger Web
+
+## Render deployment without Supabase
+
+The frontend uses the Node API in `server/index.js`; Supabase is not used for authentication, records, or identity-document storage. For a free public deployment, use Render's free Node Web Service and Neon Free PostgreSQL (permanent free tier, 1 GB limit). Both can sleep when idle, so the first request may be slow; this is a hobby/test setup, not a high-availability production service.
+
+1. Create a Neon Free PostgreSQL project and copy its pooled connection string.
+2. Create a new Render Web Service from this repository using the root `render.yaml` (plan: free).
+3. Set `DATABASE_URL` to the Neon connection string. Set `ADMIN_EMAIL` and a new `ADMIN_PASSWORD` (at least 12 characters) for the first admin account. Render can generate `APP_TOKEN_SECRET`.
+4. To send password-reset, welcome, or admin document emails, configure `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASSWORD`, and `SMTP_FROM` in Render.
+5. After `/api/health` reports `{ "ok": true }`, test a new signup and confirm it appears in Admin → Verification. Then move the custom domain to this new service.
+
+The existing Static Site cannot host the API. Keep it until the new Web Service is healthy, then attach the custom domain to the new service. Accounts and documents previously stored elsewhere are not copied automatically; the new database starts empty. Password recovery/email delivery also remains unavailable until SMTP is configured. Render's free web service sleeps after inactivity, and Neon Free has usage/storage limits.
+
+## Literal local mode
+
+Run `npm run dev:local`, then open `http://localhost:8082`. This starts the API on `127.0.0.1:10000` and the Vite site locally. It requires no cloud account, PostgreSQL server, or Supabase credentials. Local test records and uploaded documents are stored in the ignored `data/local-db.json` file.
+
+Local admin test login: `admin@quantumledger.local` / `Admin123!`. This account is for local testing only. Local signups are visible only to the local admin on this computer; they are not shared with the public Render site. Local mode does not send email.
+
+## Project technologies
+
+Vite, React, TypeScript, Tailwind CSS, Express, and PostgreSQL.
 
 ## Project info
 

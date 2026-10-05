@@ -38,8 +38,19 @@ import { supabase } from "@/integrations/supabase/client";
 interface VerificationRequest {
   id: string;
   user_id: string;
+  role?: string;
   full_name: string;
   email: string;
+  phone?: string | null;
+  birth_date?: string | null;
+  nationality?: string | null;
+  country?: string | null;
+  full_address?: string | null;
+  account_type?: string | null;
+  id_document_type?: string | null;
+  id_document_number?: string | null;
+  proof_of_address_type?: string | null;
+  proof_of_address_url?: string | null;
   verification_status: string;
   id_document_url: string | null;
   selfie_url: string | null;
@@ -66,12 +77,13 @@ const VerificationManagement = () => {
       
       if (error) throw error;
       
-      // Filter only users who have submitted verification
-      const verificationRequests = (data.profiles || []).filter(
-        (p: VerificationRequest) => p.verification_status === 'submitted' || 
-        p.verification_status === 'approved' || 
-        p.verification_status === 'rejected'
-      );
+      // Keep every profile visible; older/incomplete records may not have a status yet.
+      const verificationRequests = (data.profiles || [])
+        .filter((profile: VerificationRequest) => profile.role !== 'admin')
+        .map((profile: VerificationRequest) => ({
+          ...profile,
+          verification_status: profile.verification_status || 'pending',
+        }));
       
       setRequests(verificationRequests);
     } catch (error) {
@@ -88,11 +100,13 @@ const VerificationManagement = () => {
 
   useEffect(() => {
     fetchRequests();
+    const refreshTimer = window.setInterval(fetchRequests, 30000);
+    return () => window.clearInterval(refreshTimer);
   }, []);
 
   const filteredRequests = requests.filter(request => {
-    const matchesSearch = request.full_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      request.email.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = String(request.full_name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      String(request.email || '').toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === "all" || request.verification_status === statusFilter;
     return matchesSearch && matchesStatus;
   });
@@ -188,11 +202,11 @@ const VerificationManagement = () => {
     return data.signedUrl;
   };
 
-  const handleViewDocument = async (url: string | null, type: 'document' | 'selfie') => {
+  const handleViewDocument = async (url: string | null, type: 'document' | 'selfie' | 'address') => {
     if (!url) {
       toast({
         title: "Sin documento",
-        description: `No hay ${type === 'document' ? 'documento de identidad' : 'selfie'} disponible.`,
+        description: `No hay ${type === 'document' ? 'documento de identidad' : type === 'selfie' ? 'selfie' : 'comprobante de domicilio'} disponible.`,
         variant: "destructive",
       });
       return;
@@ -210,7 +224,7 @@ const VerificationManagement = () => {
     }
   };
 
-  const pendingCount = requests.filter(r => r.verification_status === 'submitted').length;
+  const pendingCount = requests.filter(r => r.verification_status === 'pending' || r.verification_status === 'submitted').length;
 
   return (
     <div className="space-y-6">
@@ -233,7 +247,22 @@ const VerificationManagement = () => {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5 gap-4">
+        <Card className="bg-card border-border">
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-amber-500/10">
+                <Clock className="w-5 h-5 text-amber-500" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-foreground">
+                  {requests.filter(r => r.verification_status === 'pending').length}
+                </p>
+                <p className="text-sm text-muted-foreground">Nuevos registros</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
         <Card className="bg-card border-border">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
@@ -314,6 +343,7 @@ const VerificationManagement = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">Todos</SelectItem>
+                <SelectItem value="pending">Pendiente</SelectItem>
                 <SelectItem value="submitted">En Revisión</SelectItem>
                 <SelectItem value="approved">Aprobados</SelectItem>
                 <SelectItem value="rejected">Rechazados</SelectItem>
@@ -447,8 +477,25 @@ const VerificationManagement = () => {
                 </div>
               </div>
 
+              {/* Complete signup record */}
+              <div className="space-y-3 rounded-lg border border-border p-4">
+                <h3 className="font-semibold text-foreground">Datos completos del registro</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                  <div><span className="text-muted-foreground">Teléfono:</span><p className="font-medium">{selectedRequest.phone || "No especificado"}</p></div>
+                  <div><span className="text-muted-foreground">Fecha de nacimiento:</span><p className="font-medium">{selectedRequest.birth_date || "No especificada"}</p></div>
+                  <div><span className="text-muted-foreground">Nacionalidad:</span><p className="font-medium">{selectedRequest.nationality || "No especificada"}</p></div>
+                  <div><span className="text-muted-foreground">País de residencia:</span><p className="font-medium">{selectedRequest.country || "No especificado"}</p></div>
+                  <div><span className="text-muted-foreground">Tipo de cuenta:</span><p className="font-medium">{selectedRequest.account_type || "No especificado"}</p></div>
+                  <div><span className="text-muted-foreground">Tipo de identificación:</span><p className="font-medium">{selectedRequest.id_document_type || "No especificado"}</p></div>
+                  <div><span className="text-muted-foreground">Número de identificación:</span><p className="font-medium font-mono">{selectedRequest.id_document_number || "No especificado"}</p></div>
+                  <div><span className="text-muted-foreground">Tipo de comprobante:</span><p className="font-medium">{selectedRequest.proof_of_address_type || "No especificado"}</p></div>
+                  <div className="sm:col-span-2"><span className="text-muted-foreground">Dirección completa:</span><p className="font-medium break-words">{selectedRequest.full_address || "No especificada"}</p></div>
+                  <div><span className="text-muted-foreground">Fecha de registro:</span><p className="font-medium">{formatDate(selectedRequest.created_at)}</p></div>
+                </div>
+              </div>
+
               {/* Documents */}
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
                   <Label className="text-sm font-medium mb-2 block">Documento de Identidad</Label>
                   <Button
@@ -461,6 +508,18 @@ const VerificationManagement = () => {
                     <span className="text-sm">
                       {selectedRequest.id_document_url ? "Ver Documento" : "No disponible"}
                     </span>
+                  </Button>
+                </div>
+                <div>
+                  <Label className="text-sm font-medium mb-2 block">Comprobante de domicilio</Label>
+                  <Button
+                    variant="outline"
+                    className="w-full h-24 flex flex-col items-center justify-center gap-2"
+                    onClick={() => handleViewDocument(selectedRequest.proof_of_address_url || null, 'address')}
+                    disabled={!selectedRequest.proof_of_address_url}
+                  >
+                    <FileText className="w-8 h-8 text-muted-foreground" />
+                    <span className="text-sm">{selectedRequest.proof_of_address_url ? "Ver comprobante" : "No disponible"}</span>
                   </Button>
                 </div>
                 <div>

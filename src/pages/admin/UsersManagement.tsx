@@ -79,6 +79,12 @@ interface Profile {
   phone: string;
   account_type: string;
   id_document_number: string;
+  id_document_type?: string | null;
+  verification_status?: string | null;
+  id_document_url?: string | null;
+  selfie_url?: string | null;
+  verification_notes?: string | null;
+  verification_submitted_at?: string | null;
   account_number: string;
   routing_number: string;
   status: string;
@@ -274,6 +280,18 @@ const UsersManagement = () => {
       Number(user.ltc) * cryptoPrices.ltc +
       Number(user.usd)
     );
+  };
+
+  const handleOpenDocument = async (documentPath?: string | null) => {
+    if (!documentPath) return;
+    const { data, error } = await supabase.storage
+      .from('identity-documents')
+      .createSignedUrl(documentPath, 3600);
+    if (error || !data?.signedUrl) {
+      toast({ title: "Error", description: "No se pudo abrir el documento.", variant: "destructive" });
+      return;
+    }
+    window.open(data.signedUrl, '_blank', 'noopener,noreferrer');
   };
 
   const handleViewUser = async (user: Profile) => {
@@ -1111,6 +1129,14 @@ const UsersManagement = () => {
                     <p className="font-medium font-mono">{viewingUser.id_document_number || 'No especificado'}</p>
                   </div>
                   <div>
+                    <p className="text-xs text-muted-foreground">Tipo de identificación</p>
+                    <p className="font-medium">{viewingUser.id_document_type || 'No especificado'}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground">Estado de verificación</p>
+                    <p className="font-medium">{viewingUser.verification_status || 'Pendiente'}</p>
+                  </div>
+                  <div>
                     <p className="text-xs text-muted-foreground">Teléfono</p>
                     <p className="font-medium">{viewingUser.phone || 'No especificado'}</p>
                   </div>
@@ -1165,13 +1191,37 @@ const UsersManagement = () => {
                   <div>
                     <p className="text-xs text-muted-foreground">Comprobante de domicilio</p>
                     <p className="font-medium">{proofOfAddressLabels[viewingUser.proof_of_address_type] || 'No especificado'}</p>
-                    {viewingUser.proof_of_address_url && (
-                      <Badge variant="outline" className="mt-1 text-emerald-500 border-emerald-500/30">
-                        <CheckCircle className="w-3 h-3 mr-1" />
-                        Documento cargado
-                      </Badge>
-                    )}
+                    <Button variant="outline" size="sm" className="mt-2" disabled={!viewingUser.proof_of_address_url} onClick={() => handleOpenDocument(viewingUser.proof_of_address_url)}>
+                      <Eye className="w-4 h-4 mr-2" />
+                      {viewingUser.proof_of_address_url ? 'Abrir comprobante' : 'No cargado'}
+                    </Button>
                   </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground">Documento de identidad</p>
+                    <Button variant="outline" size="sm" className="mt-2" disabled={!viewingUser.id_document_url} onClick={() => handleOpenDocument(viewingUser.id_document_url)}>
+                      <Eye className="w-4 h-4 mr-2" />
+                      {viewingUser.id_document_url ? 'Abrir documento' : 'No cargado'}
+                    </Button>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground">Selfie de verificación</p>
+                    <Button variant="outline" size="sm" className="mt-2" disabled={!viewingUser.selfie_url} onClick={() => handleOpenDocument(viewingUser.selfie_url)}>
+                      <Eye className="w-4 h-4 mr-2" />
+                      {viewingUser.selfie_url ? 'Abrir selfie' : 'No cargada'}
+                    </Button>
+                  </div>
+                  {viewingUser.verification_notes && (
+                    <div className="col-span-2">
+                      <p className="text-xs text-muted-foreground">Notas de verificación</p>
+                      <p className="font-medium">{viewingUser.verification_notes}</p>
+                    </div>
+                  )}
+                  {viewingUser.verification_submitted_at && (
+                    <div>
+                      <p className="text-xs text-muted-foreground">Fecha de envío de verificación</p>
+                      <p className="font-medium">{formatDate(viewingUser.verification_submitted_at)}</p>
+                    </div>
+                  )}
                 </div>
               </div>
 
