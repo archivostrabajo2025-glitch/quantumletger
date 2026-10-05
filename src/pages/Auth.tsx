@@ -304,40 +304,30 @@ const Auth = () => {
         }
       }
 
-      // Sign out until the OTP code is verified
-      await supabase.auth.signOut();
+      // OTP verification removed: users log in directly and continue to the dashboard.
+      if (rememberDevice) {
+        try {
+          const registerResponse = await supabase.functions.invoke("register-trusted-device", {
+            body: { email: loginEmail },
+          });
 
-
-
-
-      
-      // Send login OTP
-      try {
-        const response = await supabase.functions.invoke("send-otp", {
-          body: { email: loginEmail, type: "login" },
-        });
-
-        if (response.error) {
-          throw new Error(response.error.message);
+          if (registerResponse.data?.deviceToken) {
+            localStorage.setItem("qlb_device_token", registerResponse.data.deviceToken);
+          }
+        } catch (registerError) {
+          console.error("Error registering trusted device:", registerError);
         }
-
-        setPendingEmail(loginEmail);
-        setPendingLoginSession({ email: loginEmail, password: loginPassword });
-        setShowLoginOtpVerification(true);
-        setResendCooldown(60);
-        toast({
-          title: "Código de verificación enviado",
-          description: "Revisa tu correo electrónico y escribe el código de 6 dígitos para continuar.",
-        });
-      } catch (otpError: any) {
-        console.error("Error sending login OTP:", otpError);
-        suppressAuthRedirectRef.current = false;
-        toast({
-          title: "Error al enviar código",
-          description: "No pudimos enviar el código de verificación. Intenta de nuevo.",
-          variant: "destructive",
-        });
       }
+
+      suppressAuthRedirectRef.current = false;
+      localStorage.setItem("qlb_session_start", Date.now().toString());
+      toast({
+        title: "Inicio de sesión correcto",
+        description: rememberDevice
+          ? "Bienvenido a Quantum Ledger. Este dispositivo ha sido recordado."
+          : "Bienvenido a Quantum Ledger.",
+      });
+      navigate("/dashboard");
     } catch (unexpectedError: any) {
       console.error("Unexpected login error:", unexpectedError);
       suppressAuthRedirectRef.current = false;
