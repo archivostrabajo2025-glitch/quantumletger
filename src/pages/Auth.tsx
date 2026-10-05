@@ -56,12 +56,6 @@ const Auth = () => {
   const [pendingEmail, setPendingEmail] = useState("");
   const [resendCooldown, setResendCooldown] = useState(0);
 
-  // Inline email verification state (signup)
-  const [emailOtpSent, setEmailOtpSent] = useState(false);
-  const [emailOtpCode, setEmailOtpCode] = useState("");
-  const [emailVerified, setEmailVerified] = useState(false);
-  const [emailOtpLoading, setEmailOtpLoading] = useState(false);
-  
   // Trusted-device state for direct login flow
   const [rememberDevice, setRememberDevice] = useState(false);
   
@@ -370,17 +364,6 @@ const Auth = () => {
       return;
     }
 
-    // Require inline email verification
-    if (!emailVerified) {
-      setErrors({ email: "Debes verificar tu correo con el código de verificación" });
-      toast({
-        title: "Correo no verificado",
-        description: "Envía el código de verificación a tu correo y confírmalo antes de crear la cuenta.",
-        variant: "destructive",
-      });
-      return;
-    }
-
     setIsLoading(true);
     const redirectUrl = `${window.location.origin}/dashboard`;
 
@@ -568,88 +551,6 @@ const Auth = () => {
     setShowOtpVerification(false);
     setOtpCode("");
     setPendingEmail("");
-  };
-
-  // Inline email verification (signup): send OTP before the account exists
-  const handleSendEmailCode = async () => {
-    if (resendCooldown > 0) return;
-
-    const normalizedEmail = signupEmail.toLowerCase().trim();
-    const emailCheck = z.string().email().safeParse(normalizedEmail);
-    if (!emailCheck.success) {
-      setErrors((prev) => ({ ...prev, email: "Email inválido (debe incluir @)" }));
-      return;
-    }
-    setErrors((prev) => ({ ...prev, email: "" }));
-    setEmailOtpLoading(true);
-    try {
-      const response = await supabase.functions.invoke("send-otp", {
-        body: { email: normalizedEmail, fullName: signupFullName, type: "signup" },
-      });
-      if (response.error) throw new Error(response.error.message);
-      if (!response.data?.success) {
-        throw new Error(response.data?.error || "El código no pudo ser enviado");
-      }
-      setSignupEmail(normalizedEmail);
-      setEmailOtpSent(true);
-      setEmailOtpCode("");
-      setResendCooldown(60);
-      toast({
-        title: "Código enviado",
-        description: "Revisa tu correo y escribe el código de 6 dígitos.",
-      });
-    } catch (error: any) {
-      console.error("Error sending email code:", error);
-      toast({
-        title: "Error al enviar",
-        description: "No pudimos enviar el código. Intenta de nuevo.",
-        variant: "destructive",
-      });
-    }
-    setEmailOtpLoading(false);
-  };
-
-  const handleVerifyEmailCode = async () => {
-    if (emailOtpCode.length !== 6) {
-      toast({
-        title: "Código incompleto",
-        description: "Por favor ingresa el código de 6 dígitos.",
-        variant: "destructive",
-      });
-      return;
-    }
-    setEmailOtpLoading(true);
-    try {
-      const response = await supabase.functions.invoke("verify-otp", {
-        body: { email: signupEmail, code: emailOtpCode },
-      });
-      if (response.error) throw new Error(response.error.message);
-      const data = response.data;
-      if (!data?.success) {
-        toast({
-          title: "Error al verificar",
-          description: data?.error || "Código inválido o expirado.",
-          variant: "destructive",
-        });
-        setEmailOtpLoading(false);
-        return;
-      }
-      setEmailVerified(true);
-      setEmailOtpSent(false);
-      setEmailOtpCode("");
-      toast({
-        title: "Correo verificado",
-        description: "Tu correo electrónico fue verificado correctamente.",
-      });
-    } catch (error: any) {
-      console.error("Error verifying email code:", error);
-      toast({
-        title: "Error al verificar",
-        description: "El código es inválido o ha expirado.",
-        variant: "destructive",
-      });
-    }
-    setEmailOtpLoading(false);
   };
 
   // Forgot password handlers
@@ -1485,86 +1386,21 @@ const Auth = () => {
 
                 </div>
 
-                {/* Correo con verificación inline */}
+                {/* Correo electrónico */}
                 <div className="space-y-2">
                   <Label htmlFor="signup-email" className="text-slate-300 flex items-center gap-2">
                     <Mail className="h-4 w-4 text-slate-400" />
                     Correo electrónico
                   </Label>
-                  <div className="flex gap-2">
-                    <Input
-                      id="signup-email"
-                      type="email"
-                      placeholder="tu@email.com"
-                      value={signupEmail}
-                      onChange={(e) => {
-                        setSignupEmail(e.target.value);
-                        setEmailVerified(false);
-                        setEmailOtpSent(false);
-                        setEmailOtpCode("");
-                      }}
-                      disabled={emailVerified}
-                      className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-500"
-                    />
-                    {!emailVerified && (
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={handleSendEmailCode}
-                        disabled={emailOtpLoading || !signupEmail || resendCooldown > 0}
-                        className="shrink-0 border-blue-500/50 text-blue-400 hover:bg-blue-500/10 hover:text-blue-300"
-                      >
-                        {emailOtpLoading && !emailOtpSent ? (
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                        ) : emailOtpSent && resendCooldown > 0 ? (
-                          `Reenviar en ${resendCooldown}s`
-                        ) : emailOtpSent ? (
-                          "Reenviar código"
-                        ) : (
-                          "Enviar código"
-                        )}
-                      </Button>
-                    )}
-                  </div>
+                  <Input
+                    id="signup-email"
+                    type="email"
+                    placeholder="tu@email.com"
+                    value={signupEmail}
+                    onChange={(e) => setSignupEmail(e.target.value)}
+                    className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-500"
+                  />
                   {errors.email && <p className="text-xs text-red-400">{errors.email}</p>}
-
-                  {emailVerified ? (
-                    <div className="flex items-center gap-2 rounded-md border border-green-500/40 bg-green-500/10 px-3 py-2">
-                      <span className="text-green-400 text-sm font-medium">✓ Correo verificado</span>
-                      <button
-                        type="button"
-                        onClick={() => setEmailVerified(false)}
-                        className="ml-auto text-xs text-slate-400 hover:text-slate-200 underline"
-                      >
-                        Cambiar correo
-                      </button>
-                    </div>
-                  ) : emailOtpSent ? (
-                    <div className="space-y-2 rounded-md border border-slate-600 bg-slate-700/30 p-3">
-                      <Label className="text-slate-300 text-xs">
-                        Escribe el código de 6 dígitos que enviamos a tu correo
-                      </Label>
-                      <div className="flex gap-2">
-                        <Input
-                          type="text"
-                          inputMode="numeric"
-                          placeholder="000000"
-                          value={emailOtpCode}
-                          onChange={(e) => setEmailOtpCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
-                          className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-500 tracking-widest text-center font-mono"
-                          maxLength={6}
-                        />
-                        <Button
-                          type="button"
-                          onClick={handleVerifyEmailCode}
-                          disabled={emailOtpLoading || emailOtpCode.length !== 6}
-                          className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
-                        >
-                          {emailOtpLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Verificar"}
-                        </Button>
-                      </div>
-                    </div>
-                  ) : null}
                 </div>
 
                 {/* Tipo de cuenta */}
