@@ -62,10 +62,7 @@ const Auth = () => {
   const [emailVerified, setEmailVerified] = useState(false);
   const [emailOtpLoading, setEmailOtpLoading] = useState(false);
   
-  // Login OTP verification state
-  const [showLoginOtpVerification, setShowLoginOtpVerification] = useState(false);
-  const [loginOtpCode, setLoginOtpCode] = useState("");
-  const [pendingLoginSession, setPendingLoginSession] = useState<any>(null);
+  // Trusted-device state for direct login flow
   const [rememberDevice, setRememberDevice] = useState(false);
   
   // Forgot password state
@@ -130,8 +127,6 @@ const Auth = () => {
     }
   }, [resendCooldown]);
 
-  // Use refs to track OTP verification state for the auth listener
-  const isOtpVerificationInProgressRef = useRef(false);
   const recoveryModeRef = useRef(isRecoveryUrl());
 
   // Show an explanation when the recovery link is expired or already used
@@ -150,11 +145,6 @@ const Auth = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   
-  // Keep ref in sync with state
-  useEffect(() => {
-    isOtpVerificationInProgressRef.current = showLoginOtpVerification || pendingLoginSession !== null;
-  }, [showLoginOtpVerification, pendingLoginSession]);
-
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
@@ -164,28 +154,25 @@ const Auth = () => {
           setShowResetPassword(true);
           return;
         }
-        
+
         // Never redirect while the user still has to set a new password
         if (recoveryModeRef.current) {
           return;
         }
 
-        // Don't auto-redirect if we're in the middle of login OTP verification
-        // or if we've explicitly suppressed redirects during login->OTP flow.
-        if (isOtpVerificationInProgressRef.current || suppressAuthRedirectRef.current) {
-          console.log("Skipping redirect - OTP verification in progress");
+        if (suppressAuthRedirectRef.current) {
+          console.log("Skipping redirect - login in progress");
           return;
         }
-        
+
         if (event === 'SIGNED_IN' && session?.user && !showResetPassword) {
           // Check user role and redirect accordingly
           setTimeout(async () => {
-            // Double check refs again before redirecting
-            if (isOtpVerificationInProgressRef.current || suppressAuthRedirectRef.current) {
-              console.log("Skipping redirect after timeout - OTP verification in progress");
+            if (suppressAuthRedirectRef.current) {
+              console.log("Skipping redirect after timeout - login in progress");
               return;
             }
-            
+
             const { data: roleData } = await supabase
               .from("user_roles")
               .select("role")
@@ -341,134 +328,6 @@ const Auth = () => {
     }
   };
 
-  const handleVerifyLoginOtp = async () => {
-    if (loginOtpCode.length !== 6) {
-      toast({
-        title: "Código incompleto",
-        description: "Por favor ingresa el código de 6 dígitos.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      const response = await supabase.functions.invoke("verify-login-otp", {
-        body: { email: pendingEmail, code: loginOtpCode },
-      });
-
-      if (response.error) {
-        throw new Error(response.error.message);
-      }
-
-      const data = response.data;
-      
-      if (!data.success) {
-        toast({
-          title: "Error al verificar",
-          description: data.error || "Código inválido o expirado.",
-          variant: "destructive",
-        });
-        setIsLoading(false);
-        return;
-      }
-
-      // OTP verified, now sign in again
-      const { error: signInError } = await supabase.auth.signInWithPassword({
-        email: pendingLoginSession.email,
-        password: pendingLoginSession.password,
-      });
-
-      if (signInError) {
-        toast({
-          title: "Error al iniciar sesión",
-          description: signInError.message,
-          variant: "destructive",
-        });
-        setIsLoading(false);
-        return;
-      }
-
-      // If "Remember device" is checked, register the device
-      if (rememberDevice) {
-        try {
-          const registerResponse = await supabase.functions.invoke("register-trusted-device", {
-            body: { email: pendingLoginSession.email },
-          });
-          
-          if (registerResponse.data?.deviceToken) {
-            localStorage.setItem("qlb_device_token", registerResponse.data.deviceToken);
-          }
-        } catch (registerError) {
-          console.error("Error registering trusted device:", registerError);
-        }
-      }
-
-      toast({
-        title: "¡Verificación exitosa!",
-        description: rememberDevice 
-          ? "Bienvenido a Quantum Ledger. Este dispositivo ha sido guardado."
-          : "Bienvenido a Quantum Ledger.",
-      });
-      
-      // Clean up and redirect
-      localStorage.setItem("qlb_session_start", Date.now().toString());
-      suppressAuthRedirectRef.current = false;
-      setShowLoginOtpVerification(false);
-      setLoginOtpCode("");
-      setPendingEmail("");
-      setPendingLoginSession(null);
-      setRememberDevice(false);
-      navigate("/dashboard");
-    } catch (error: any) {
-      console.error("Error verifying login OTP:", error);
-      suppressAuthRedirectRef.current = false;
-      toast({
-        title: "Error al verificar",
-        description: "El código es inválido o ha expirado.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleResendLoginOtp = async () => {
-    if (resendCooldown > 0) return;
-    
-    setIsLoading(true);
-    try {
-      const response = await supabase.functions.invoke("send-otp", {
-        body: { email: pendingEmail, type: "login" },
-      });
-
-      if (response.error) {
-        throw new Error(response.error.message);
-      }
-
-      setResendCooldown(60);
-      toast({
-        title: "Código reenviado",
-        description: "Revisa tu correo electrónico.",
-      });
-    } catch (error: any) {
-      console.error("Error resending login OTP:", error);
-      toast({
-        title: "Error al reenviar",
-        description: "No pudimos reenviar el código. Intenta de nuevo.",
-        variant: "destructive",
-      });
-    }
-    setIsLoading(false);
-  };
-
-  const handleBackFromLoginOtp = () => {
-    setShowLoginOtpVerification(false);
-    setLoginOtpCode("");
-    setPendingEmail("");
-    setPendingLoginSession(null);
-    suppressAuthRedirectRef.current = false;
-  };
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -1094,97 +953,6 @@ const Auth = () => {
                 )}
               </Button>
             </form>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  // Login OTP Verification Screen
-  if (showLoginOtpVerification) {
-    return (
-      <div className="min-h-screen bg-gradient-hero flex items-center justify-center p-4">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent" />
-        
-        <Card className="w-full max-w-md relative z-10 bg-card border-border backdrop-blur-xl">
-          <CardHeader className="text-center space-y-2">
-            <img src={logo} alt="Quantum Ledger Business" className="mx-auto h-20 w-auto mb-2" />
-            <CardTitle className="text-2xl font-bold text-foreground">Verificación de seguridad</CardTitle>
-            <CardDescription className="text-muted-foreground">
-              Hemos enviado un código de 6 dígitos a <span className="font-medium text-foreground">{pendingEmail}</span>
-            </CardDescription>
-          </CardHeader>
-          
-          <CardContent className="space-y-6">
-            <div className="flex justify-center">
-              <InputOTP
-                maxLength={6}
-                value={loginOtpCode}
-                onChange={(value) => setLoginOtpCode(value)}
-              >
-                <InputOTPGroup>
-                  <InputOTPSlot index={0} className="bg-secondary border-border text-foreground" />
-                  <InputOTPSlot index={1} className="bg-secondary border-border text-foreground" />
-                  <InputOTPSlot index={2} className="bg-secondary border-border text-foreground" />
-                  <InputOTPSlot index={3} className="bg-secondary border-border text-foreground" />
-                  <InputOTPSlot index={4} className="bg-secondary border-border text-foreground" />
-                  <InputOTPSlot index={5} className="bg-secondary border-border text-foreground" />
-                </InputOTPGroup>
-              </InputOTP>
-            </div>
-
-            {/* Remember Device Checkbox */}
-            <div className="flex items-center space-x-2">
-              <Checkbox 
-                id="rememberDevice" 
-                checked={rememberDevice}
-                onCheckedChange={(checked) => setRememberDevice(checked === true)}
-              />
-              <label 
-                htmlFor="rememberDevice" 
-                className="text-sm text-muted-foreground cursor-pointer"
-              >
-                Recordar este dispositivo por 30 días
-              </label>
-            </div>
-
-            <Button
-              onClick={handleVerifyLoginOtp}
-              className="w-full bg-primary hover:bg-primary/90"
-              disabled={isLoading || loginOtpCode.length !== 6}
-            >
-              {isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Verificando...
-                </>
-              ) : (
-                "Verificar e iniciar sesión"
-              )}
-            </Button>
-
-            <div className="text-center space-y-3">
-              <p className="text-sm text-muted-foreground">
-                ¿No recibiste el código?{" "}
-                <button
-                  type="button"
-                  onClick={handleResendLoginOtp}
-                  disabled={resendCooldown > 0 || isLoading}
-                  className="text-primary hover:text-primary/80 font-medium disabled:opacity-50"
-                >
-                  {resendCooldown > 0 ? `Reenviar en ${resendCooldown}s` : "Reenviar código"}
-                </button>
-              </p>
-
-              <button
-                type="button"
-                onClick={handleBackFromLoginOtp}
-                className="text-muted-foreground hover:text-foreground text-sm flex items-center justify-center gap-2 mx-auto"
-              >
-                <ArrowLeft className="h-4 w-4" />
-                Volver al inicio de sesión
-              </button>
-            </div>
           </CardContent>
         </Card>
       </div>
