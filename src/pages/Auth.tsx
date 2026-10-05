@@ -217,10 +217,8 @@ const Auth = () => {
         suppressAuthRedirectRef.current = false;
         toast({
           title: "Error al iniciar sesión",
-          description: error.message === "Invalid login credentials" 
-            ? "Credenciales inválidas" 
-            : error.message === "Email not confirmed"
-            ? "Email no confirmado. Por favor verifica tu correo."
+          description: error.message === "Invalid login credentials"
+            ? "Credenciales inválidas"
             : error.message,
           variant: "destructive",
         });
@@ -365,13 +363,11 @@ const Auth = () => {
     }
 
     setIsLoading(true);
-    const redirectUrl = `${window.location.origin}/dashboard`;
 
     const { data: authData, error } = await supabase.auth.signUp({
       email: signupEmail,
       password: signupPassword,
       options: {
-        emailRedirectTo: redirectUrl,
         data: {
           full_name: signupFullName,
           phone: signupPhone,
@@ -436,24 +432,41 @@ const Auth = () => {
         .eq('user_id', authData.user.id);
     }
 
-    // Email was already verified inline before signup — finish directly
-    await supabase.auth.signOut();
-
-    // Send welcome email (best effort)
     try {
-      await supabase.functions.invoke("send-welcome-email", {
-        body: { email: signupEmail, fullName: signupFullName },
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: signupEmail,
+        password: signupPassword,
       });
-    } catch (welcomeError) {
-      console.error("Error sending welcome email:", welcomeError);
-    }
 
-    toast({
-      title: "¡Cuenta creada!",
-      description: "Tu correo ya está verificado. Ahora puedes iniciar sesión.",
-    });
-    setActiveTab("login");
-    setIsLoading(false);
+      if (signInError) {
+        throw signInError;
+      }
+
+      try {
+        await supabase.functions.invoke("send-welcome-email", {
+          body: { email: signupEmail, fullName: signupFullName },
+        });
+      } catch (welcomeError) {
+        console.error("Error sending welcome email:", welcomeError);
+      }
+
+      toast({
+        title: "¡Cuenta creada!",
+        description: "Tu cuenta está lista y ya puedes acceder al dashboard.",
+      });
+
+      localStorage.setItem("qlb_session_start", Date.now().toString());
+      navigate("/dashboard");
+    } catch (loginError: any) {
+      console.error("Error signing in after signup:", loginError);
+      toast({
+        title: "Cuenta creada",
+        description: "La cuenta fue creada correctamente. Ahora puedes iniciar sesión con tus credenciales.",
+      });
+      setActiveTab("login");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleVerifyOtp = async () => {
