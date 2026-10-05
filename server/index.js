@@ -133,6 +133,24 @@ async function initializeDatabase() {
       console.info('Initial admin account created from Render environment variables.');
     }
   }
+
+  const demoEmail = process.env.DEMO_EMAIL?.trim().toLowerCase();
+  const demoPassword = process.env.DEMO_PASSWORD;
+  if (demoEmail && demoPassword) {
+    if (demoPassword.length < 8) throw new Error('DEMO_PASSWORD must be at least 8 characters.');
+    const existing = await pool.query('SELECT id FROM app_users WHERE email = $1', [demoEmail]);
+    if (!existing.rowCount) {
+      const id = crypto.randomUUID();
+      const password = hashPassword(demoPassword);
+      await pool.query(
+        'INSERT INTO app_users (id, email, full_name, password_salt, password_hash, role) VALUES ($1, $2, $3, $4, $5, $6)',
+        [id, demoEmail, process.env.DEMO_NAME || 'Usuario Demo', password.salt, password.hash, 'user'],
+      );
+      await saveRecord('user_roles', { id: crypto.randomUUID(), user_id: id, role: 'user' }, id);
+      await saveRecord('profiles', { user_id: id, email: demoEmail, full_name: process.env.DEMO_NAME || 'Usuario Demo', status: 'active', verification_status: 'approved', created_at: now(), updated_at: now() }, id);
+      console.info('Demo account created from environment variables.');
+    }
+  }
 }
 
 async function saveRecord(table, record, ownerId) {

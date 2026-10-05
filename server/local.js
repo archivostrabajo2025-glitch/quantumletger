@@ -119,6 +119,19 @@ async function initializeStore() {
     saveRecord('user_roles', { id: crypto.randomUUID(), user_id: admin.id, role: 'admin' }, admin.id);
     saveRecord('profiles', { id: admin.id, user_id: admin.id, email: admin.email, full_name: admin.full_name, status: 'active', verification_status: 'approved' }, admin.id);
   }
+
+  const demoEmail = String(process.env.LOCAL_DEMO_EMAIL || 'demo@quantumledger.local').trim().toLowerCase();
+  const demoPassword = process.env.LOCAL_DEMO_PASSWORD || 'Demo123!';
+  const demoName = process.env.LOCAL_DEMO_NAME || 'Usuario Demo';
+  let demo = store.users.find((user) => user.email === demoEmail);
+  if (!demo) {
+    const credentials = hashPassword(demoPassword);
+    demo = { id: crypto.randomUUID(), email: demoEmail, full_name: demoName, ...credentials, role: 'user', created_at: now() };
+    store.users.push(demo);
+    saveRecord('user_roles', { id: crypto.randomUUID(), user_id: demo.id, role: 'user' }, demo.id);
+    saveRecord('profiles', { id: demo.id, user_id: demo.id, email: demo.email, full_name: demo.full_name, status: 'active', verification_status: 'approved' }, demo.id);
+    console.info('Demo account created for local mode.');
+  }
   await saveStore();
 }
 

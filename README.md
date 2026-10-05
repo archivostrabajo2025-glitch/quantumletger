@@ -19,6 +19,8 @@ Run `npm run dev:local`, then open `http://localhost:8082`. This starts the API 
 
 Local admin test login: `admin@quantumledger.local` / `Admin123!`. This account is for local testing only. Local signups are visible only to the local admin on this computer; they are not shared with the public Render site. Local mode does not send email.
 
+Demo user test login: `demo@quantumledger.local` / `Demo123!`. This is a local-only regular account for checking the user dashboard. The public Render deployment generates a separate demo password; retrieve it only from Render's Environment page. Do not reuse or publish the local demo password on the public service.
+
 ## Project technologies
 
 Vite, React, TypeScript, Tailwind CSS, Express, and PostgreSQL.

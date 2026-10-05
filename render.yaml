@@ -19,3 +19,11 @@ services:
         generateValue: true
       - key: ADMIN_NAME
         value: Administrador
+      # Cuenta de demostración (usuario normal, perfil activo/aprobado).
+      # Se crea automáticamente en el primer arranque del despliegue.
+      - key: DEMO_EMAIL
+        value: demo@quantumledgerbusiness.com
+      - key: DEMO_PASSWORD
+        generateValue: true
+      - key: DEMO_NAME
+        value: Usuario Demo
