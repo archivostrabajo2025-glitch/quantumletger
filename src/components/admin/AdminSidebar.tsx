@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { LayoutDashboard, Users, Building2, ArrowLeftRight, Shield, Bell, FileText, Globe, Settings, Wallet, LogOut, UserCheck, Receipt, FileUp } from "lucide-react";
+import { LayoutDashboard, Users, Building2, ArrowLeftRight, Shield, Bell, FileText, Globe, Settings, Wallet, LogOut, UserCheck, Receipt } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarHeader, SidebarFooter } from "@/components/ui/sidebar";
 import { supabase } from "@/integrations/supabase/client";
@@ -47,10 +47,6 @@ const menuItems = [{
   title: "Generador de Comprobantes",
   url: "/admin/receipts",
   icon: Receipt
-}, {
-  title: "Enviar Documentos",
-  url: "/admin/documents",
-  icon: FileUp
 }, {
   title: "Informes",
   url: "/admin/reports",

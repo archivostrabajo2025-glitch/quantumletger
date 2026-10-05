@@ -7,12 +7,11 @@ The frontend uses the Node API in `server/index.js`; Supabase is not used for au
 1. Create a Neon Free PostgreSQL project and copy its pooled connection string.
 2. Create a new Render Web Service from this repository using the root `render.yaml` (plan: free).
 3. Set `DATABASE_URL` to the Neon connection string. The blueprint creates `admin@quantumledgerbusiness.com` and generates its password and `APP_TOKEN_SECRET`; retrieve the generated password from the service's Render Environment page.
-4. To send password-reset, welcome, or admin document emails, configure `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASSWORD`, and `SMTP_FROM` in Render.
-5. After `/api/health` reports `{ "ok": true }`, test a new signup and confirm it appears in Admin → Verification. Then move the custom domain to this new service.
+4. After `/api/health` reports `{ "ok": true }`, test a new signup and confirm it appears in Admin → Verification. Then move the custom domain to this new service.
 
 See `.env.example` for the complete list of environment variables used by the API, the Vite client, and local mode. Values are set in the Render dashboard (or in `.env` for local development); none are required at build time for a same-origin deploy.
 
-The existing Static Site cannot host the API. Keep it until the new Web Service is healthy, then attach the custom domain to the new service. Accounts and documents previously stored elsewhere are not copied automatically; the new database starts empty. Password recovery/email delivery also remains unavailable until SMTP is configured. Render's free web service sleeps after inactivity, and Neon Free has usage/storage limits.
+The existing Static Site cannot host the API. Keep it until the new Web Service is healthy, then attach the custom domain to the new service. Accounts and documents previously stored elsewhere are not copied automatically; the new database starts empty. This deployment does not send email: there are no welcome, document, or password-recovery messages. Render's free web service sleeps after inactivity, and Neon Free has usage/storage limits.
 
 ## Literal local mode
 

@@ -1,6 +1,5 @@
 import express from 'express';
 import { Pool } from 'pg';
-import nodemailer from 'nodemailer';
 import crypto from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -106,13 +105,6 @@ async function initializeDatabase() {
       PRIMARY KEY (table_name, record_id)
     );
     CREATE INDEX IF NOT EXISTS app_records_user_idx ON app_records (table_name, user_id);
-    CREATE TABLE IF NOT EXISTS password_reset_otps (
-      email text PRIMARY KEY,
-      code_hash text NOT NULL,
-      expires_at timestamptz NOT NULL,
-      sent_at timestamptz NOT NULL DEFAULT now(),
-      used boolean NOT NULL DEFAULT false
-    );
     CREATE TABLE IF NOT EXISTS identity_documents (
       bucket text NOT NULL,
       path text NOT NULL,
@@ -233,86 +225,6 @@ app.post('/api/auth/login', async (req, res) => {
 
 app.get('/api/auth/me', requireUser, async (req, res) => json(res, 200, { user: appUser(req.user) }));
 
-app.post('/api/auth/password-reset/request', async (req, res) => {
-  const email = String(req.body?.email || '').trim().toLowerCase();
-  if (!/^\S+@\S+\.\S+$/.test(email)) return json(res, 400, { error: 'Ingresa un correo válido.' });
-  const user = await pool.query('SELECT id FROM app_users WHERE email = $1', [email]);
-  if (!user.rowCount) return json(res, 200, { success: true });
-
-  const smtpHost = process.env.SMTP_HOST;
-  const smtpUser = process.env.SMTP_USER;
-  const smtpPassword = process.env.SMTP_PASSWORD;
-  const smtpFrom = process.env.SMTP_FROM;
-  if (!smtpHost || !smtpUser || !smtpPassword || !smtpFrom) {
-    return json(res, 503, { error: 'La recuperación de contraseña no está configurada. Añade SMTP_HOST, SMTP_USER, SMTP_PASSWORD y SMTP_FROM en Render.' });
-  }
-
-  const previous = await pool.query('SELECT sent_at FROM password_reset_otps WHERE email = $1 AND used = false', [email]);
-  if (previous.rowCount && Date.now() - new Date(previous.rows[0].sent_at).getTime() < 60000) {
-    return json(res, 429, { error: 'Espera un minuto antes de solicitar otro código.' });
-  }
-  const code = String(crypto.randomInt(100000, 1000000));
-  const codeHash = crypto.createHmac('sha256', tokenSecret).update(`${email}:${code}`).digest('hex');
-  await pool.query(
-    `INSERT INTO password_reset_otps (email, code_hash, expires_at, sent_at, used)
-     VALUES ($1, $2, now() + interval '10 minutes', now(), false)
-     ON CONFLICT (email) DO UPDATE SET code_hash = EXCLUDED.code_hash, expires_at = EXCLUDED.expires_at, sent_at = now(), used = false`,
-    [email, codeHash],
-  );
-  try {
-    const transporter = nodemailer.createTransport({
-      host: smtpHost,
-      port: Number(process.env.SMTP_PORT || 587),
-      secure: process.env.SMTP_SECURE === 'true',
-      auth: { user: smtpUser, pass: smtpPassword },
-    });
-    await transporter.sendMail({
-      from: smtpFrom,
-      to: email,
-      subject: 'Código para restablecer tu contraseña',
-      text: `Tu código de restablecimiento es ${code}. Caduca en 10 minutos.`,
-      html: `<p>Tu código de restablecimiento es:</p><p style="font-size:28px;font-weight:bold;letter-spacing:6px">${code}</p><p>Caduca en 10 minutos. Si no solicitaste este cambio, ignora este mensaje.</p>`,
-    });
-    json(res, 200, { success: true });
-  } catch (error) {
-    console.error('Password-reset email failed:', error);
-    await pool.query('UPDATE password_reset_otps SET used = true WHERE email = $1', [email]);
-    json(res, 502, { error: 'No se pudo enviar el correo. Revisa la configuración SMTP de Render.' });
-  }
-});
-
-app.post('/api/auth/password-reset/confirm', async (req, res) => {
-  const email = String(req.body?.email || '').trim().toLowerCase();
-  const code = String(req.body?.code || '');
-  const password = req.body?.newPassword;
-  if (!/^\S+@\S+\.\S+$/.test(email) || !/^\d{6}$/.test(code) || typeof password !== 'string' || password.length < 8) {
-    return json(res, 400, { success: false, error: 'Los datos no son válidos. La contraseña debe tener al menos 8 caracteres.' });
-  }
-  const result = await pool.query('SELECT code_hash, expires_at, used FROM password_reset_otps WHERE email = $1', [email]);
-  const otp = result.rows[0];
-  const candidate = crypto.createHmac('sha256', tokenSecret).update(`${email}:${code}`).digest('hex');
-  if (!otp || otp.used || new Date(otp.expires_at).getTime() < Date.now() || !safeEqual(candidate, otp.code_hash)) {
-    return json(res, 400, { success: false, error: 'El código es inválido o ha caducado.' });
-  }
-  const userResult = await pool.query('SELECT id FROM app_users WHERE email = $1', [email]);
-  if (!userResult.rowCount) return json(res, 400, { success: false, error: 'Usuario no encontrado.' });
-  const credentials = hashPassword(password);
-  const client = await pool.connect();
-  try {
-    await client.query('BEGIN');
-    await client.query('UPDATE app_users SET password_salt = $1, password_hash = $2 WHERE email = $3', [credentials.salt, credentials.hash, email]);
-    await client.query('UPDATE password_reset_otps SET used = true WHERE email = $1', [email]);
-    await client.query('COMMIT');
-    json(res, 200, { success: true });
-  } catch (error) {
-    await client.query('ROLLBACK');
-    console.error('Password reset failed:', error);
-    json(res, 500, { success: false, error: 'No se pudo actualizar la contraseña.' });
-  } finally {
-    client.release();
-  }
-});
-
 app.post('/api/data/query', requireUser, async (req, res) => {
   const { table, action = 'select', filters = [], order, limit, fields, values, single } = req.body || {};
   if (!allowedTables.has(table)) return json(res, 400, { error: 'Tabla no permitida.' });
@@ -416,46 +328,6 @@ app.post('/api/functions/:name', requireUser, async (req, res) => {
     if (body.transaction) await saveRecord('transactions', { ...body.transaction, id: crypto.randomUUID(), user_id: target }, target);
     const updated = await saveRecord('profiles', { ...profile, ...patch }, target);
     return json(res, 200, { success: true, profile: updated });
-  }
-  if (name === 'send-welcome-email' || name === 'send-document-email' || name === 'send-smtp-email') {
-    if (name === 'send-document-email' && req.user.role !== 'admin') return json(res, 403, { error: 'Acceso solo para administradores.' });
-    const recipient = String(body.to || body.email || '').trim().toLowerCase();
-    if (name === 'send-welcome-email' && recipient !== req.user.email) return json(res, 403, { error: 'Solo puedes enviar un correo de bienvenida a tu cuenta.' });
-    if (!recipient || !process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASSWORD || !process.env.SMTP_FROM) {
-      return json(res, 503, { error: 'El envío de correos requiere configurar SMTP_HOST, SMTP_USER, SMTP_PASSWORD y SMTP_FROM en Render.' });
-    }
-    try {
-      const transporter = nodemailer.createTransport({
-        host: process.env.SMTP_HOST,
-        port: Number(process.env.SMTP_PORT || 587),
-        secure: process.env.SMTP_SECURE === 'true',
-        auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASSWORD },
-      });
-      if (name === 'send-document-email') {
-        const attachment = body.attachment;
-        if (!attachment?.content || !attachment?.filename) return json(res, 400, { error: 'Falta el archivo adjunto.' });
-        await transporter.sendMail({
-          from: process.env.SMTP_FROM,
-          to: recipient,
-          subject: String(body.subject || 'Documento de Quantum Ledger').slice(0, 200),
-          html: String(body.html || ''),
-          attachments: [{ filename: path.basename(attachment.filename), content: attachment.content, encoding: 'base64', contentType: attachment.type || 'application/pdf' }],
-        });
-      } else {
-        const fullName = String(body.fullName || 'Usuario').replace(/[&<>"']/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
-        await transporter.sendMail({
-          from: process.env.SMTP_FROM,
-          to: recipient,
-          subject: 'Bienvenido a Quantum Ledger',
-          text: `Hola ${fullName}, tu cuenta ya está creada.`,
-          html: `<p>Hola ${fullName}, tu cuenta ya está creada.</p>`,
-        });
-      }
-      return json(res, 200, { success: true, delivered: true });
-    } catch (error) {
-      console.error('Transactional email failed:', error);
-      return json(res, 502, { error: 'No se pudo entregar el correo. Verifica los datos SMTP.' });
-    }
   }
   if (name === 'check-trusted-device') return json(res, 200, { trusted: false });
   if (name === 'register-trusted-device') return json(res, 200, { deviceToken: crypto.randomBytes(32).toString('hex') });

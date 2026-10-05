@@ -22,8 +22,6 @@ const routes = [
   "admin/notifications",
   "admin/reports",
   "admin/receipts",
-  "admin/documents",
-  "admin/emails",
   "admin/settings",
   "dashboard/verification",
   "dashboard/wallet",

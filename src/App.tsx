@@ -24,8 +24,6 @@ const SettingsPage = lazy(() => import("./pages/admin/SettingsPage"));
 const WalletPage = lazy(() => import("./pages/admin/WalletPage"));
 const VerificationManagement = lazy(() => import("./pages/admin/VerificationManagement"));
 const ReceiptGeneratorPage = lazy(() => import("./pages/admin/ReceiptGeneratorPage"));
-const EmailPreviewPage = lazy(() => import("./pages/admin/EmailPreviewPage"));
-const SendDocumentsPage = lazy(() => import("./pages/admin/SendDocumentsPage"));
 
 // User pages
 const UserDashboard = lazy(() => import("./pages/user/UserDashboard"));
@@ -73,8 +71,6 @@ const App = () => (
               <Route path="notifications" element={<NotificationsPage />} />
               <Route path="reports" element={<ReportsPage />} />
               <Route path="receipts" element={<ReceiptGeneratorPage />} />
-              <Route path="documents" element={<SendDocumentsPage />} />
-              <Route path="emails" element={<EmailPreviewPage />} />
               <Route path="settings" element={<SettingsPage />} />
             </Route>
 

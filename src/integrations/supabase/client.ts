@@ -137,7 +137,7 @@ export const supabase = {
       } catch (error: any) { return { data: { user: null, session: null }, error: { message: error.message } }; }
     },
     async signOut() { setSession(null); notifyAuthListeners('SIGNED_OUT', null); return { error: null }; },
-    async resetPasswordForEmail(_email: string, _options?: unknown) { return { data: null, error: { message: 'La recuperación de contraseña se inicia desde el formulario de código.' } }; },
+    async resetPasswordForEmail(_email: string, _options?: unknown) { return { data: null, error: { message: 'La recuperación de contraseña por correo no está disponible.' } }; },
     async updateUser(_payload: unknown) { return { data: { user: null }, error: { message: 'Esta operación no está disponible.' } }; },
     onAuthStateChange(callback: (event: string, session: any) => void) {
       authListeners.add(callback);
@@ -151,11 +151,7 @@ export const supabase = {
   functions: {
     async invoke(name: string, payload?: unknown) {
       const body = (payload as any)?.body || payload || {};
-      const endpoint = name === 'send-otp' && (body as any).type === 'password_reset'
-        ? '/api/auth/password-reset/request'
-        : name === 'reset-password-with-otp'
-          ? '/api/auth/password-reset/confirm'
-          : `/api/functions/${encodeURIComponent(name)}`;
+      const endpoint = `/api/functions/${encodeURIComponent(name)}`;
       try { return { data: await request(endpoint, { method: 'POST', body: JSON.stringify(body) }), error: null }; }
       catch (error: any) { return { data: null, error: { message: error.message } }; }
     },

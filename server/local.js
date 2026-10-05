@@ -102,13 +102,12 @@ async function initializeStore() {
   try {
     store = JSON.parse(await fs.readFile(dataFile, 'utf8'));
   } catch {
-    store = { tokenSecret: crypto.randomBytes(48).toString('hex'), users: [], records: [], documents: [], resetCodes: [] };
+    store = { tokenSecret: crypto.randomBytes(48).toString('hex'), users: [], records: [], documents: [] };
   }
   store.tokenSecret ||= crypto.randomBytes(48).toString('hex');
   store.users ||= [];
   store.records ||= [];
   store.documents ||= [];
-  store.resetCodes ||= [];
 
   const adminEmail = String(process.env.LOCAL_ADMIN_EMAIL || 'admin@quantumledger.local').trim().toLowerCase();
   const adminPassword = process.env.LOCAL_ADMIN_PASSWORD || 'Admin123!';
@@ -164,8 +163,6 @@ app.post('/api/auth/login', (req, res) => {
 });
 
 app.get('/api/auth/me', requireUser, (req, res) => json(res, 200, { user: appUser(req.user) }));
-app.post('/api/auth/password-reset/request', (_req, res) => json(res, 503, { error: 'En modo local no se envían correos. Configura SMTP para probar la recuperación de contraseña.' }));
-app.post('/api/auth/password-reset/confirm', (_req, res) => json(res, 503, { success: false, error: 'La recuperación por correo no está habilitada en modo local.' }));
 
 app.post('/api/data/query', requireUser, async (req, res) => {
   const { table, action = 'select', filters = [], order, limit, fields, values, single } = req.body || {};
@@ -257,7 +254,6 @@ app.post('/api/functions/:name', requireUser, async (req, res) => {
   }
   if (name === 'check-trusted-device') return json(res, 200, { trusted: false });
   if (name === 'register-trusted-device') return json(res, 200, { deviceToken: crypto.randomBytes(32).toString('hex') });
-  if (['send-welcome-email', 'send-document-email', 'send-smtp-email'].includes(name)) return json(res, 503, { error: 'El correo no se envía en modo local.' });
   return json(res, 501, { error: `La función ${name} no está disponible en modo local.` });
 });
 
