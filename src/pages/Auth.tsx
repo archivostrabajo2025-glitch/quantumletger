@@ -297,61 +297,47 @@ const Auth = () => {
     }
 
     setIsLoading(true);
-
-    const { data: authData, error } = await supabase.auth.signUp({
-      email: signupEmail,
-      password: signupPassword,
-      options: {
-        data: {
-          full_name: signupFullName,
-          phone: signupPhone,
-          nationality: signupNationality,
-          country: signupCountry,
-          full_address: signupFullAddress,
-          birth_date: signupBirthDate,
-          proof_of_address_type: signupProofOfAddressType,
-          id_document_type: signupIdDocumentType,
-          account_type: signupAccountType,
+    // signUp already creates a session. Suppress the general auth listener while
+    // the profile and proof-of-address upload finish, then navigate explicitly.
+    suppressAuthRedirectRef.current = true;
+    let accountCreated = false;
+    try {
+      const { data: authData, error } = await supabase.auth.signUp({
+        email: signupEmail,
+        password: signupPassword,
+        options: {
+          data: {
+            full_name: signupFullName,
+            phone: signupPhone,
+            nationality: signupNationality,
+            country: signupCountry,
+            full_address: signupFullAddress,
+            birth_date: signupBirthDate,
+            proof_of_address_type: signupProofOfAddressType,
+            id_document_type: signupIdDocumentType,
+            account_type: signupAccountType,
+          },
         },
-      },
-    });
+      });
 
-    if (error) {
-      if (error.message.includes("already registered")) {
-        toast({
-          title: "Usuario ya registrado",
-          description: "Este email ya está registrado. Intenta iniciar sesión.",
-          variant: "destructive",
-        });
+      if (error) throw error;
+      if (!authData?.user) throw new Error("No se recibió la cuenta creada. Intenta iniciar sesión.");
+      accountCreated = true;
+
+      let proofOfAddressUrl: string | null = null;
+      const fileExt = signupProofOfAddressFile.name.split('.').pop();
+      const fileName = `${authData.user.id}/proof_of_address.${fileExt}`;
+      const { error: uploadError } = await supabase.storage
+        .from('identity-documents')
+        .upload(fileName, signupProofOfAddressFile, { upsert: true });
+
+      if (uploadError) {
+        console.error("Error uploading proof of address:", uploadError);
       } else {
-        toast({
-          title: "Error al registrarse",
-          description: error.message,
-          variant: "destructive",
-        });
-      }
-      setIsLoading(false);
-      return;
-    }
-
-    // Upload documents if user was created
-    if (authData?.user) {
-      // Upload proof of address
-      if (signupProofOfAddressFile) {
-        const fileExt = signupProofOfAddressFile.name.split('.').pop();
-        const fileName = `${authData.user.id}/proof_of_address.${fileExt}`;
-        
-        const { error: uploadError } = await supabase.storage
-          .from('identity-documents')
-          .upload(fileName, signupProofOfAddressFile, { upsert: true });
-
-        if (uploadError) {
-          console.error("Error uploading proof of address:", uploadError);
-        }
+        proofOfAddressUrl = fileName;
       }
 
-      // Ensure the profile row exists and is marked as pending so admins can see the user immediately.
-      await supabase
+      const { error: profileError } = await supabase
         .from('profiles')
         .upsert({
           user_id: authData.user.id,
@@ -359,7 +345,7 @@ const Auth = () => {
           full_name: signupFullName,
           status: 'pending',
           verification_status: 'pending',
-          proof_of_address_url: signupProofOfAddressFile ? `${authData.user.id}/proof_of_address.${signupProofOfAddressFile.name.split('.').pop()}` : null,
+          proof_of_address_url: proofOfAddressUrl,
           proof_of_address_type: signupProofOfAddressType,
           id_document_number: signupIdDocumentNumber,
           nationality: signupNationality,
@@ -367,36 +353,45 @@ const Auth = () => {
           full_address: signupFullAddress,
           phone: signupPhone,
           birth_date: signupBirthDate,
+          id_document_type: signupIdDocumentType,
           account_type: signupAccountType,
           updated_at: new Date().toISOString(),
         }, { onConflict: 'user_id' });
-    }
 
-    try {
-      const { error: signInError } = await supabase.auth.signInWithPassword({
-        email: signupEmail,
-        password: signupPassword,
-      });
+      if (profileError) throw new Error(`Cuenta creada, pero no se pudieron guardar todos los datos del registro: ${profileError.message}`);
 
-      if (signInError) {
-        throw signInError;
-      }
+      suppressAuthRedirectRef.current = false;
 
       toast({
         title: "¡Cuenta creada!",
-        description: "Tu cuenta está lista y ya puedes acceder al dashboard.",
+        description: uploadError
+          ? "Tu cuenta está lista. No se pudo guardar el comprobante; podrás volver a cargarlo desde tu cuenta."
+          : "Tu cuenta está lista y ya puedes acceder al dashboard.",
       });
 
       localStorage.setItem("qlb_session_start", Date.now().toString());
       navigate("/dashboard");
-    } catch (loginError: any) {
-      console.error("Error signing in after signup:", loginError);
-      toast({
-        title: "Cuenta creada",
-        description: "La cuenta fue creada correctamente. Ahora puedes iniciar sesión con tus credenciales.",
-      });
-      setActiveTab("login");
+    } catch (signupError: any) {
+      console.error("Error completing signup:", signupError);
+      if (accountCreated) {
+        toast({
+          title: "Cuenta creada con datos pendientes",
+          description: signupError.message || "La cuenta existe, pero no se pudo completar el registro. Inicia sesión y contacta al administrador.",
+          variant: "destructive",
+        });
+        localStorage.setItem("qlb_session_start", Date.now().toString());
+        navigate("/dashboard");
+      } else {
+        toast({
+          title: signupError.message?.includes("already registered") ? "Usuario ya registrado" : "Error al registrarse",
+          description: signupError.message?.includes("already registered")
+            ? "Este email ya está registrado. Intenta iniciar sesión."
+            : signupError.message || "No se pudo crear la cuenta. Intenta de nuevo.",
+          variant: "destructive",
+        });
+      }
     } finally {
+      suppressAuthRedirectRef.current = false;
       setIsLoading(false);
     }
   };

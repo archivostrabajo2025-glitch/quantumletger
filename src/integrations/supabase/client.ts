@@ -3,6 +3,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- keep the existing Supabase-shaped API contract at this adapter boundary. */
 const SESSION_KEY = 'quantum-ledger-api-session';
 const API_BASE = (import.meta.env.VITE_API_BASE_URL as string | undefined)?.replace(/\/$/, '') || '';
+const API_REQUEST_TIMEOUT_MS = 120_000;
 
 type QueryState = {
   table: string;
@@ -46,10 +47,21 @@ const request = async (path: string, options: RequestInit = {}) => {
   const headers = new Headers(options.headers);
   if (options.body && !headers.has('Content-Type')) headers.set('Content-Type', 'application/json');
   if (token) headers.set('Authorization', `Bearer ${token}`);
-  const response = await fetch(`${API_BASE}${path}`, { ...options, headers });
-  const payload = response.status === 204 ? null : await response.json().catch(() => null);
-  if (!response.ok) throw new Error(payload?.error || `API error (${response.status})`);
-  return payload;
+  const controller = new AbortController();
+  const timeoutId = window.setTimeout(() => controller.abort(), API_REQUEST_TIMEOUT_MS);
+  try {
+    const response = await fetch(`${API_BASE}${path}`, { ...options, headers, signal: controller.signal });
+    const payload = response.status === 204 ? null : await response.json().catch(() => null);
+    if (!response.ok) throw new Error(payload?.error || `API error (${response.status})`);
+    return payload;
+  } catch (error) {
+    if (controller.signal.aborted) {
+      throw new Error('El servidor tardó demasiado en responder. Espera un minuto y vuelve a intentar.');
+    }
+    throw error;
+  } finally {
+    window.clearTimeout(timeoutId);
+  }
 };
 
 const authListeners = new Set<(event: string, session: any) => void>();
