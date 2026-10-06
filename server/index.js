@@ -309,9 +309,31 @@ app.post('/api/auth/login', async (req, res) => {
   const password = req.body?.password;
   const result = await pool.query('SELECT id, email, full_name, password_salt, password_hash, role, created_at FROM app_users WHERE email = $1', [email]);
   const user = result.rows[0];
-  if (!user || typeof password !== 'string' || !passwordMatches(password, user)) {
+  if (!user || typeof password !== 'string') {
     return json(res, 401, { error: 'Invalid login credentials' });
   }
+
+  const seededCredentials = [
+    { email: process.env.ADMIN_EMAIL?.trim().toLowerCase(), password: process.env.ADMIN_PASSWORD, role: 'admin', name: process.env.ADMIN_NAME || 'Administrador' },
+    { email: process.env.DEMO_EMAIL?.trim().toLowerCase(), password: process.env.DEMO_PASSWORD, role: 'user', name: process.env.DEMO_NAME || 'Usuario Demo' },
+  ].find((entry) => entry.email === email && entry.password);
+  const storedPasswordMatches = passwordMatches(password, user);
+  const configuredPasswordMatches = seededCredentials ? safeEqual(password, seededCredentials.password) : false;
+
+  if (!storedPasswordMatches && !configuredPasswordMatches) {
+    return json(res, 401, { error: 'Invalid login credentials' });
+  }
+
+  if (seededCredentials && configuredPasswordMatches) {
+    const credentials = hashPassword(seededCredentials.password);
+    await pool.query(
+      'UPDATE app_users SET full_name = $1, password_salt = $2, password_hash = $3, role = $4 WHERE id = $5',
+      [seededCredentials.name, credentials.salt, credentials.hash, seededCredentials.role, user.id],
+    );
+    user.full_name = seededCredentials.name;
+    user.role = seededCredentials.role;
+  }
+
   const token = signToken(user);
   json(res, 200, { user: appUser(user), session: { access_token: token, refresh_token: token, expires_in: 604800, expires_at: Math.floor(Date.now() / 1000) + 604800 } });
 });
