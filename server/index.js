@@ -138,17 +138,23 @@ async function initializeDatabase() {
   if (adminEmail && adminPassword) {
     if (adminPassword.length < 12) throw new Error('ADMIN_PASSWORD must be at least 12 characters.');
     const existing = await pool.query('SELECT id FROM app_users WHERE email = $1', [adminEmail]);
+    const id = existing.rows[0]?.id || crypto.randomUUID();
+    const password = hashPassword(adminPassword);
     if (!existing.rowCount) {
-      const id = crypto.randomUUID();
-      const password = hashPassword(adminPassword);
       await pool.query(
         'INSERT INTO app_users (id, email, full_name, password_salt, password_hash, role) VALUES ($1, $2, $3, $4, $5, $6)',
         [id, adminEmail, process.env.ADMIN_NAME || 'Administrador', password.salt, password.hash, 'admin'],
       );
-      await saveRecord('user_roles', { id: crypto.randomUUID(), user_id: id, role: 'admin' }, id);
-      await saveRecord('profiles', { user_id: id, email: adminEmail, full_name: process.env.ADMIN_NAME || 'Administrador', status: 'active', verification_status: 'approved', created_at: now(), updated_at: now() }, id);
       console.info('Initial admin account created from Render environment variables.');
+    } else {
+      // Keep the seeded administrator credential aligned with Render's generated secret.
+      await pool.query(
+        'UPDATE app_users SET full_name = $1, password_salt = $2, password_hash = $3, role = $4 WHERE id = $5',
+        [process.env.ADMIN_NAME || 'Administrador', password.salt, password.hash, 'admin', id],
+      );
     }
+    await ensureSeedRole(id, 'admin');
+    await ensureSeedProfile(id, adminEmail, process.env.ADMIN_NAME || 'Administrador', 'active', 'approved');
   }
 
   const demoEmail = process.env.DEMO_EMAIL?.trim().toLowerCase();
@@ -163,11 +169,63 @@ async function initializeDatabase() {
         'INSERT INTO app_users (id, email, full_name, password_salt, password_hash, role) VALUES ($1, $2, $3, $4, $5, $6)',
         [id, demoEmail, process.env.DEMO_NAME || 'Usuario Demo', password.salt, password.hash, 'user'],
       );
-      await saveRecord('user_roles', { id: crypto.randomUUID(), user_id: id, role: 'user' }, id);
-      await saveRecord('profiles', { user_id: id, email: demoEmail, full_name: process.env.DEMO_NAME || 'Usuario Demo', status: 'active', verification_status: 'approved', created_at: now(), updated_at: now() }, id);
       console.info('Demo account created from environment variables.');
+      await ensureSeedRole(id, 'user');
+      await ensureSeedProfile(id, demoEmail, process.env.DEMO_NAME || 'Usuario Demo', 'active', 'approved');
+    } else {
+      const id = existing.rows[0].id;
+      const password = hashPassword(demoPassword);
+      await pool.query(
+        'UPDATE app_users SET full_name = $1, password_salt = $2, password_hash = $3 WHERE id = $4 AND role = $5',
+        [process.env.DEMO_NAME || 'Usuario Demo', password.salt, password.hash, id, 'user'],
+      );
+      await ensureSeedRole(id, 'user');
+      await ensureSeedProfile(id, demoEmail, process.env.DEMO_NAME || 'Usuario Demo', 'active', 'approved');
     }
   }
+}
+
+async function ensureSeedRole(userId, role) {
+  const existing = await pool.query(
+    "SELECT data FROM app_records WHERE table_name = 'user_roles' AND user_id = $1 LIMIT 1",
+    [userId],
+  );
+  const record = existing.rows[0]?.data || { id: crypto.randomUUID(), user_id: userId };
+  await saveRecord('user_roles', { ...record, user_id: userId, role }, userId);
+}
+
+async function ensureSeedProfile(userId, email, fullName, status, verificationStatus) {
+  const existing = await pool.query(
+    "SELECT data FROM app_records WHERE table_name = 'profiles' AND user_id = $1 LIMIT 1",
+    [userId],
+  );
+  const profile = existing.rows[0]?.data || { id: userId, user_id: userId, email, full_name: fullName };
+  const defaults = {
+    email,
+    full_name: fullName,
+    country: 'Sin especificar',
+    status,
+    verification_status: verificationStatus,
+    is_activated: false,
+    show_activation_modal: false,
+    show_fatca: false,
+    show_custom_notification: false,
+    custom_notification_amount: 0,
+    fatca_amount: 0,
+    activation_amount: 0,
+    usd: 0,
+    btc: 0,
+    eth: 0,
+    bnb: 0,
+    usdt: 0,
+    ltc: 0,
+    created_at: now(),
+    updated_at: now(),
+  };
+  for (const [key, value] of Object.entries(defaults)) {
+    if (profile[key] === undefined || profile[key] === null) profile[key] = value;
+  }
+  await saveRecord('profiles', profile, userId);
 }
 
 async function saveRecord(table, record, ownerId) {
