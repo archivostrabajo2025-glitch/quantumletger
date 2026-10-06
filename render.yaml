@@ -3,8 +3,6 @@ services:
     name: quantum-ledger-api
     runtime: node
     plan: free
-    domains:
-      - quantumledgerbusiness.com
     buildCommand: npm install --include=dev && npm run build
     startCommand: npm start
     healthCheckPath: /api/health
@@ -29,3 +27,15 @@ services:
         generateValue: true
       - key: DEMO_NAME
         value: Usuario Demo
+
+  # Adopt the existing static website so the registered domain stays attached,
+  # while its frontend calls the new API over HTTPS.
+  - type: web
+    name: quantumledger-web-01
+    runtime: static
+    plan: free
+    buildCommand: npm install --include=dev && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        value: https://quantum-ledger-api.onrender.com

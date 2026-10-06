@@ -29,6 +29,23 @@ const pool = new Pool({
 });
 
 app.disable('x-powered-by');
+const allowedOrigins = new Set([
+  'https://quantumledgerbusiness.com',
+  'https://www.quantumledgerbusiness.com',
+  'https://quantumledger-web-01.onrender.com',
+  'https://quantum-ledger-api.onrender.com',
+]);
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin && allowedOrigins.has(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Vary', 'Origin');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
+  }
+  if (req.method === 'OPTIONS') return res.sendStatus(origin && allowedOrigins.has(origin) ? 204 : 403);
+  next();
+});
 app.use(express.json({ limit: '20mb' }));
 
 const now = () => new Date().toISOString();

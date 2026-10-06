@@ -5,13 +5,12 @@
 The frontend uses the Node API in `server/index.js`; Supabase is not used for authentication, records, or identity-document storage. For a free public deployment, use Render's free Node Web Service and Neon Free PostgreSQL (permanent free tier, 1 GB limit). Both can sleep when idle, so the first request may be slow; this is a hobby/test setup, not a high-availability production service.
 
 1. Create a Neon Free PostgreSQL project and copy its pooled connection string.
-2. Create a new Render Web Service from this repository using the root `render.yaml` (plan: free).
-3. Set `DATABASE_URL` to the Neon connection string. The blueprint creates `admin@quantumledgerbusiness.com` and generates its password and `APP_TOKEN_SECRET`; retrieve the generated password from the service's Render Environment page.
-4. After `/api/health` reports `{ "ok": true }`, test a new signup and confirm it appears in Admin → Verification. Then move the custom domain to this new service.
+2. Sync the root Render Blueprint. It provisions the free API and adopts the existing Static Site, retaining `quantumledgerbusiness.com` on that site.
+3. Set `DATABASE_URL` to the Neon connection string when prompted. The blueprint generates admin and demo passwords; retrieve them only from the Render Environment page.
+4. The static frontend uses `VITE_API_BASE_URL=https://quantum-ledger-api.onrender.com`; the API allows requests from the registered root and www domains.
+5. Confirm `/api/health` returns `{ "ok": true }`, then test registration and the Admin → Verification queue on the registered site.
 
-See `.env.example` for the complete list of environment variables used by the API, the Vite client, and local mode. Values are set in the Render dashboard (or in `.env` for local development); none are required at build time for a same-origin deploy.
-
-The existing Static Site cannot host the API. Keep it until the new Web Service is healthy, then attach the custom domain to the new service. Accounts and documents previously stored elsewhere are not copied automatically; the new database starts empty. This deployment does not send email: there are no welcome, document, or password-recovery messages. Render's free web service sleeps after inactivity, and Neon Free has usage/storage limits.
+See `.env.example` for all API, frontend, and local settings. Accounts and documents stored in previous systems are not copied automatically; the new database starts empty. Email sending and password recovery are disabled. The free API can sleep after inactivity, and Neon Free has storage/usage limits.
 
 ## Literal local mode
 
