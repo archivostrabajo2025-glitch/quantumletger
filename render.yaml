@@ -33,6 +33,7 @@ services:
   - type: web
     name: quantumledger-web-01
     runtime: static
+    branch: fix/free-render-neon-backend
     buildCommand: npm install --include=dev && npm run build
     staticPublishPath: ./dist
     envVars:
