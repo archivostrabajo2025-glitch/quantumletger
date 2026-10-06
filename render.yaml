@@ -3,6 +3,8 @@ services:
     name: quantum-ledger-api
     runtime: node
     plan: free
+    domains:
+      - quantumledgerbusiness.com
     buildCommand: npm install --include=dev && npm run build
     startCommand: npm start
     healthCheckPath: /api/health
